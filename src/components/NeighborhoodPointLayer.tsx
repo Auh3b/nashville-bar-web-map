@@ -1,10 +1,14 @@
 import { Layer, Source } from 'react-map-gl/mapbox';
+import { BaseLayerCopmponentProps } from '../utils/layer.types';
 
 const sourceId = 'neighbourhood-point';
 const layerId = 'neighbourhood-point-id';
 const url =
   'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/nashville_neighbourhoods_points.geojson';
-export default function NeighborhoodPointLayer() {
+export default function NeighborhoodPointLayer(
+  props: BaseLayerCopmponentProps,
+) {
+  const { selectedFeature } = props;
   return (
     <Source
       id={sourceId}
@@ -17,12 +21,31 @@ export default function NeighborhoodPointLayer() {
         layout={{ visibility: 'visible' }}
         paint={{
           'circle-radius': 10,
-          'circle-color': '#dd3b3b',
-          'circle-stroke-color': '#dd3b3b',
+          'circle-color': '#4b75f2',
+          'circle-stroke-color': '#4b75f2',
           'circle-stroke-width': 2,
           'circle-opacity': 0.5,
         }}
       />
+      {selectedFeature && (
+        <Layer
+          id={layerId + 'selected'}
+          source={sourceId}
+          type='circle'
+          filter={[
+            '==',
+            ['get', selectedFeature.property],
+            selectedFeature.value,
+          ]}
+          paint={{
+            'circle-radius': 10,
+            'circle-color': '#d63c3c',
+            'circle-stroke-color': '#d63c3c',
+            'circle-stroke-width': 2,
+            'circle-opacity': 0.5,
+          }}
+        />
+      )}
     </Source>
   );
 }

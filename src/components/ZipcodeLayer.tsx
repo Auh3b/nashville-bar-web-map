@@ -1,29 +1,25 @@
 import { Layer, Source } from 'react-map-gl/mapbox';
 import { BaseLayerCopmponentProps } from '../utils/layer.types';
 
-const sourceId = 'neighbourhood-poly';
-const layerId = 'neighbourhood-layer';
+const sourceId = 'zipcode-source';
+const layerId = 'zipcode-layer';
 const url =
-  'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/nashville_neighbourhoods.geojson';
+  'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/nashville_zipcode_refined.json';
 
-export default function NeigborhoodPolygonLayer(
-  props: BaseLayerCopmponentProps,
-) {
+export default function ZipcodeLayer(props: BaseLayerCopmponentProps) {
   const { selectedFeature } = props;
   return (
     <Source
+      type='geojson'
       id={sourceId}
-      type={'geojson'}
       data={url}>
       <Layer
-        source={sourceId}
-        type={'fill'}
         id={layerId}
-        paint={{
-          'fill-color': '#23a667',
-          'fill-opacity': 0.5,
-        }}
+        source={sourceId}
+        type='fill'
+        paint={{ 'fill-color': '#f5c064', 'fill-opacity': 0.5 }}
       />
+
       {selectedFeature && (
         <Layer
           id={layerId + 'selected'}
