@@ -12,6 +12,7 @@ import { LAYER_PROPERTY_MAP } from './utils/mapHandlers';
 import ZipcodeLayer from './components/ZipcodeLayer';
 import useSelectedFeature from './hooks/useSelectedFeature';
 import NeighborhoodInfo from './components/NeighborhoodInfo';
+import LegendUI from './components/LegendUI';
 
 const initialViewState: ViewState = {
   longitude: -86.8110513,
@@ -22,9 +23,24 @@ const initialViewState: ViewState = {
   padding: { top: 0, bottom: 0, left: 0, right: 0 },
 };
 
+interface SidePanelQueue {
+  id?: any;
+  [k: string]: any;
+}
+
+const legendItems = [
+  'neighbourhood-layer',
+  'neighbourhood-point-id',
+  'zipcode-layer',
+];
+
 function App() {
+  const [legends, setLegends] = useState(legendItems);
+  const [sidePanel, setsidePanel] = useState<SidePanelQueue>({});
+  const [explore, setExplore] = useState(false);
   const { getSelectedFeature, handleSelectedFeature } = useSelectedFeature();
   const [hoverInfo, setHoverInfo] = useState<null | HoverInfoCardProps>(null);
+
   const [cursor, setCursor] = useState<string>('');
   const [selected, setSelected] = useState(null);
   const handleExpand = (value: any) => {
@@ -55,7 +71,7 @@ function App() {
 
   const handleClick = (e: MapMouseEvent) => {
     if (!e.features?.length) return;
-    console.log(e.features);
+    setExplore(false);
     const layerId = e.features[0].layer?.id || '';
     const column = LAYER_PROPERTY_MAP[layerId];
     const value = e.features[0].properties?.[column];
@@ -65,6 +81,19 @@ function App() {
         value,
       },
     });
+
+    setsidePanel({ id: value, name: value });
+  };
+
+  const handleExplore = (value: any) => {
+    setExplore(value);
+  };
+
+  const handleLegendToggle = (value: any) => {
+    console.log(value);
+    setLegends((prev) =>
+      prev.includes(value) ? prev.filter((d) => d !== value) : [...prev, value],
+    );
   };
 
   return (
@@ -96,20 +125,34 @@ function App() {
                 />
               ))}
               {hoverInfo && <HoverInfoCard {...hoverInfo} />}
-              {/* <ZipcodeLayer
+              <ZipcodeLayer
                 selectedFeature={getSelectedFeature('zipcode-layer')}
-              /> */}
+                legends={legends}
+              />
               <NeigborhoodPolygonLayer
                 selectedFeature={getSelectedFeature('neighbourhood-layer')}
+                legends={legends}
               />
               <NeighborhoodPointLayer
                 selectedFeature={getSelectedFeature('neighbourhood-point-id')}
+                legends={legends}
+              />
+              <LegendUI
+                items={legends}
+                onToggle={handleLegendToggle}
               />
             </MapContainer>
           </div>
-          <div className='py-2 rounded-2xl bg-gray-900 w-1/3 overflow-y-auto max-h-150 lg:max-h-117 scrollbar-none'>
-            <NeighborhoodInfoUI />
+          <div className='py-2 rounded-2xl bg-gray-900 w-1/3 overflow-y-auto max-h-150 lg:max-h-117 scrollbar-none flex'>
+            <NeighborhoodInfoUI
+              {...sidePanel}
+              explore={explore}
+              onExplore={handleExplore}
+            />
+
             <BarsInfoUI
+              explore={explore}
+              // @ts-ignore
               selected={selected}
               onExpand={handleExpand}
             />
@@ -122,17 +165,24 @@ function App() {
 
 export default App;
 
-function NeighborhoodInfoUI() {
-  return <NeighborhoodInfo id={'West Nashville'} />;
+function NeighborhoodInfoUI(
+  props: SidePanelQueue & {
+    onExplore?: (value: any) => void;
+    explore?: boolean;
+  },
+) {
+  return <NeighborhoodInfo {...props} />;
 }
 
 function BarsInfoUI(props: {
+  explore: boolean;
   selected: string;
   onExpand: (value: any) => void;
 }) {
-  const { selected, onExpand } = props;
+  const { explore, selected, onExpand } = props;
   return (
-    <>
+    <div
+      className={`transition-all duration-500 ${explore ? 'grow' : 'hidden'}`}>
       {bars.map(({ name, address, description }, i) => (
         <BarSideItem
           key={i}
@@ -144,6 +194,6 @@ function BarsInfoUI(props: {
           onExpand={onExpand}
         />
       ))}
-    </>
+    </div>
   );
 }

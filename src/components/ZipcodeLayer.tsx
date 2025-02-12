@@ -7,8 +7,7 @@ const url =
   'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/nashville_zipcode_refined.json';
 
 export default function ZipcodeLayer(props: BaseLayerCopmponentProps) {
-  const { selectedFeature } = props;
-  console.log(selectedFeature);
+  const { selectedFeature, legends } = props;
   return (
     <Source
       type='geojson'
@@ -17,6 +16,7 @@ export default function ZipcodeLayer(props: BaseLayerCopmponentProps) {
       <Layer
         id={layerId}
         source={sourceId}
+        layout={{ visibility: legends?.includes(layerId) ? 'visible' : 'none' }}
         type='fill'
         paint={{ 'fill-color': '#f5c064', 'fill-opacity': 0.5 }}
       />
@@ -26,6 +26,9 @@ export default function ZipcodeLayer(props: BaseLayerCopmponentProps) {
           id={layerId + 'selected'}
           source={sourceId}
           type='fill'
+          layout={{
+            visibility: legends?.includes(layerId) ? 'visible' : 'none',
+          }}
           filter={[
             '==',
             ['get', selectedFeature.property],

@@ -9,8 +9,7 @@ const url =
 export default function NeigborhoodPolygonLayer(
   props: BaseLayerCopmponentProps,
 ) {
-  const { selectedFeature } = props;
-  console.log(selectedFeature);
+  const { selectedFeature, legends } = props;
   return (
     <Source
       id={sourceId}
@@ -20,6 +19,9 @@ export default function NeigborhoodPolygonLayer(
         source={sourceId}
         type={'fill'}
         id={layerId}
+        layout={{
+          visibility: legends?.includes(layerId) ? 'visible' : 'none',
+        }}
         paint={{
           'fill-color': '#23a667',
           'fill-opacity': 0.5,
@@ -30,6 +32,9 @@ export default function NeigborhoodPolygonLayer(
           id={layerId + 'selected'}
           source={sourceId}
           type='fill'
+          layout={{
+            visibility: legends?.includes(layerId) ? 'visible' : 'none',
+          }}
           filter={[
             '==',
             ['get', selectedFeature.property],

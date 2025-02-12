@@ -1,5 +1,5 @@
 export interface NeighborhoodInfoProps {
-  id: any;
+  id?: any;
   name?: string;
   description?: string;
   onExplore?: (id: any) => void;
@@ -15,10 +15,13 @@ export default function NeighborhoodInfo(props: NeighborhoodInfoProps) {
     explore = false,
   } = props;
   const handleExplore = () => {
-    if (onExplore) onExplore(id);
+    if (onExplore) onExplore(true);
   };
   return (
-    <div className='flex flex-col gap-4'>
+    <div
+      className={`flex flex-col gap-4 tranasition all ${
+        !id ? 'hidden' : explore ? 'hidden' : 'grow'
+      }`}>
       <span className='text-xs uppercase border-b border-b-slate-700 p-4'>
         {name ? name : id}
       </span>

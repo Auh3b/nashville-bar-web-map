@@ -8,7 +8,7 @@ const url =
 export default function NeighborhoodPointLayer(
   props: BaseLayerCopmponentProps,
 ) {
-  const { selectedFeature } = props;
+  const { selectedFeature, legends } = props;
   return (
     <Source
       id={sourceId}
@@ -18,7 +18,7 @@ export default function NeighborhoodPointLayer(
         id={layerId}
         source={sourceId}
         type='circle'
-        layout={{ visibility: 'visible' }}
+        layout={{ visibility: legends?.includes(layerId) ? 'visible' : 'none' }}
         paint={{
           'circle-radius': 10,
           'circle-color': '#4b75f2',
@@ -32,6 +32,9 @@ export default function NeighborhoodPointLayer(
           id={layerId + 'selected'}
           source={sourceId}
           type='circle'
+          layout={{
+            visibility: legends?.includes(layerId) ? 'visible' : 'none',
+          }}
           filter={[
             '==',
             ['get', selectedFeature.property],

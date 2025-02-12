@@ -3,4 +3,5 @@ export interface BaseLayerCopmponentProps {
     property: string;
     value: unknown;
   };
+  legends?: string[];
 }
