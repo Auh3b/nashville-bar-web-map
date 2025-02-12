@@ -1,7 +1,10 @@
 import { useCallback, useState } from 'react';
 
 interface SelectedFeature {
-  [k: string]: number | null;
+  [k: string]: {
+    property: string;
+    value: unknown;
+  };
 }
 
 export default function useSelectedFeature() {
@@ -15,6 +18,7 @@ export default function useSelectedFeature() {
   const handleSelectedFeature = (value: null | SelectedFeature) => {
     setSelectedFeatureId((prev) => ({ ...prev, ...value }));
   };
+  console.log(selectedFeatureId);
   return {
     getSelectedFeature,
     handleSelectedFeature,

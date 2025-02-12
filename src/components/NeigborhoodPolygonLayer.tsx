@@ -10,6 +10,7 @@ export default function NeigborhoodPolygonLayer(
   props: BaseLayerCopmponentProps,
 ) {
   const { selectedFeature } = props;
+  console.log(selectedFeature);
   return (
     <Source
       id={sourceId}
@@ -28,18 +29,15 @@ export default function NeigborhoodPolygonLayer(
         <Layer
           id={layerId + 'selected'}
           source={sourceId}
-          type='circle'
+          type='fill'
           filter={[
             '==',
             ['get', selectedFeature.property],
             selectedFeature.value,
           ]}
           paint={{
-            'circle-radius': 10,
-            'circle-color': '#d63c3c',
-            'circle-stroke-color': '#d63c3c',
-            'circle-stroke-width': 2,
-            'circle-opacity': 0.5,
+            'fill-color': '#d63c3c',
+            'fill-opacity': 0.5,
           }}
         />
       )}

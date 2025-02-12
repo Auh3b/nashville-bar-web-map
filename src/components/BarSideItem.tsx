@@ -22,9 +22,9 @@ export default function BarSideItem(props: BarSideItemProps) {
   }, [selected, open]);
 
   return (
-    <div className={`flex flex-col ${open && 'border-b border-gray-50'}`}>
+    <div className={`flex flex-col ${open && 'border-b border-b-slate-700 '}`}>
       <div
-        className='flex items-center justify-between  p-3  cursor-pointer border-b border-gray-50 hover:bg-slate-800 transition ease-in-out'
+        className='flex items-center justify-between  p-3  cursor-pointer border-b border-b-slate-700  hover:bg-slate-800 transition ease-in-out'
         onClick={handleClick}>
         <span className='text-xs uppercase'>{name}</span>
         <span>{open ? '⏸️' : '▶️'}</span>
