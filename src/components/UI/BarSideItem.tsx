@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { PropsWithChildren, useCallback } from 'react';
 import { FaAngleDown, FaAngleRight } from 'react-icons/fa6';
 
 interface BarSideItemProps {
@@ -10,7 +10,9 @@ interface BarSideItemProps {
   onExpand: (value: any) => void;
 }
 
-export default function BarSideItem(props: BarSideItemProps) {
+export default function BarSideItem(
+  props: PropsWithChildren<BarSideItemProps>,
+) {
   const { id, name, address, description, selected, onExpand } = props;
 
   const open = selected == id;
@@ -36,6 +38,8 @@ export default function BarSideItem(props: BarSideItemProps) {
         }`}>
         <div className='mb-4 p-4 text-sm'>📌{address}</div>
         <div className='p-4 text-xs'>{description}</div>
+
+        {props.children}
       </div>
     </div>
   );
