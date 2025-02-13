@@ -1,21 +1,15 @@
 import { useCallback, useState } from 'react';
-
-interface SelectedFeature {
-  [k: string]: {
-    property: string;
-    value: unknown;
-  };
-}
+import { SelectedFeatures } from '../utils/layer.types';
 
 export default function useSelectedFeature() {
-  const [selectedFeatureId, setSelectedFeatureId] = useState<SelectedFeature>(
+  const [selectedFeatureId, setSelectedFeatureId] = useState<SelectedFeatures>(
     {},
   );
   const getSelectedFeature = useCallback(
     (id: string) => selectedFeatureId[id],
     [selectedFeatureId],
   );
-  const handleSelectedFeature = (value: null | SelectedFeature) => {
+  const handleSelectedFeature = (value: null | SelectedFeatures) => {
     setSelectedFeatureId((prev) => ({ ...prev, ...value }));
   };
   return {

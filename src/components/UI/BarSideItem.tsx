@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { FaAngleDown, FaAngleRight } from 'react-icons/fa6';
 
 interface BarSideItemProps {
   id: any;
@@ -27,7 +28,7 @@ export default function BarSideItem(props: BarSideItemProps) {
         className='flex items-center justify-between  p-3  cursor-pointer border-b border-b-slate-700  hover:bg-slate-800 transition ease-in-out'
         onClick={handleClick}>
         <span className='text-xs uppercase'>{name}</span>
-        <span>{open ? '⏸️' : '▶️'}</span>
+        <span>{open ? <FaAngleDown /> : <FaAngleRight />}</span>
       </div>
       <div
         className={` transition-all duration-500 ease-in-out  scrollbar-none ${

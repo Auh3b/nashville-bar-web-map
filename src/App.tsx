@@ -1,18 +1,17 @@
-import { useState } from 'react';
 import './App.css';
-import BarMarker from './components/BarMarker';
-import BarSideItem from './components/BarSideItem';
-import MapContainer from './components/MapContainer';
+import BarMarker from './components/map/BarMarker';
+import MapContainer from './components/map/MapContainer';
 import { bars } from './data/database';
-import { MapMouseEvent, ViewState } from 'react-map-gl/mapbox';
-import NeigborhoodPolygonLayer from './components/NeigborhoodPolygonLayer';
-import NeighborhoodPointLayer from './components/NeighborhoodPointLayer';
-import HoverInfoCard, { HoverInfoCardProps } from './components/HoverInfoCard';
-import { LAYER_PROPERTY_MAP } from './utils/mapHandlers';
-import ZipcodeLayer from './components/ZipcodeLayer';
-import useSelectedFeature from './hooks/useSelectedFeature';
-import NeighborhoodInfo from './components/NeighborhoodInfo';
-import LegendUI from './components/LegendUI';
+import { ViewState } from 'react-map-gl/mapbox';
+import HoverInfoCard from './components/UI/HoverInfoCard';
+import LegendUI from './components/map/LegendUI';
+import useLegends from './hooks/useLegends';
+import useCursor from './hooks/useCursor';
+import MapLayersContainer from './components/map/layers';
+import useHoverInfo from './hooks/useHoverInfo';
+import useSidePanel from './hooks/useSidePanel';
+import SidePanel from './components/UI/SidePanel';
+import MobileDrawer from './components/UI/MobileDrawer';
 
 const initialViewState: ViewState = {
   longitude: -86.8110513,
@@ -23,119 +22,55 @@ const initialViewState: ViewState = {
   padding: { top: 0, bottom: 0, left: 0, right: 0 },
 };
 
-interface SidePanelQueue {
-  id?: any;
-  [k: string]: any;
-}
-
-const legendItems = [
-  'neighbourhood-layer',
-  'neighbourhood-point-id',
-  'zipcode-layer',
-];
-
 function App() {
-  const [legends, setLegends] = useState(legendItems);
-  const [sidePanel, setsidePanel] = useState<SidePanelQueue>({});
-  const [explore, setExplore] = useState(false);
-  const { getSelectedFeature, handleSelectedFeature } = useSelectedFeature();
-  const [hoverInfo, setHoverInfo] = useState<null | HoverInfoCardProps>(null);
-
-  const [cursor, setCursor] = useState<string>('');
-  const [selected, setSelected] = useState(null);
-  const handleExpand = (value: any) => {
-    setSelected(value);
-  };
-
-  const handleMouseEnter = () => {
-    setCursor('pointer');
-  };
-
-  const handleMouseExit = () => {
-    setCursor('');
-  };
-
-  const handleMouseMove = (e: MapMouseEvent) => {
-    if (!e.features?.length) {
-      return setHoverInfo(null);
-    }
-    const { x, y } = e.point;
-    const layerId = e.features[0].layer?.id || '';
-    const children = e.features[0].properties?.[LAYER_PROPERTY_MAP[layerId]];
-    setHoverInfo({
-      x,
-      y,
-      children,
-    });
-  };
-
-  const handleClick = (e: MapMouseEvent) => {
-    if (!e.features?.length) return;
-    setExplore(false);
-    const layerId = e.features[0].layer?.id || '';
-    const column = LAYER_PROPERTY_MAP[layerId];
-    const value = e.features[0].properties?.[column];
-    handleSelectedFeature({
-      [layerId]: {
-        property: column,
-        value,
-      },
-    });
-
-    setsidePanel({ id: value, name: value });
-  };
-
-  const handleExplore = (value: any) => {
-    setExplore(value);
-  };
-
-  const handleLegendToggle = (value: any) => {
-    console.log(value);
-    setLegends((prev) =>
-      prev.includes(value) ? prev.filter((d) => d !== value) : [...prev, value],
-    );
-  };
+  const { legends, handleLegendToggle } = useLegends();
+  const { cursor, handleMouseEnter, handleMouseLeave } = useCursor();
+  const { hoverInfo, handleMouseMove } = useHoverInfo();
+  const {
+    mapRef,
+    sidePanel,
+    explore,
+    selectedBar,
+    handleSelectBar,
+    handleExplore,
+    handleClick,
+    getSelectedFeature,
+    handleBarClick,
+  } = useSidePanel();
 
   return (
-    <div className='flex items-center justify-center w-screen h-screen bg-gradient-to-br from-emerald-950 to-black p-4'>
-      <div className='flex flex-col bg-teal-900 p-4 rounded-3xl text-white w-full h-full lg:w-2/3 lg:h-4/5 shadow'>
+    <div className='flex items-center justify-center w-screen h-screen bg-gradient-to-br from-emerald-950 to-black md:p-4'>
+      <div className='flex flex-col bg-teal-900 p-4 md:rounded-3xl text-white w-full h-full lg:w-2/3 lg:h-4/5 shadow'>
         <p className='mb-4'>Welcome to blog</p>
         <div className='flex grow gap-4 w-full'>
           <div className='grow'>
             <MapContainer
               mapProps={{
+                // @ts-ignore
+                ref: mapRef,
                 cursor,
-                interactiveLayerIds: [
-                  'neighbourhood-layer',
-                  'neighbourhood-point-id',
-                  'zipcode-layer',
-                ],
+                interactiveLayerIds: legends,
                 onClick: handleClick,
                 onMouseMove: handleMouseMove,
                 onMouseEnter: handleMouseEnter,
-                onMouseLeave: handleMouseExit,
+                onMouseLeave: handleMouseLeave,
               }}
               CSSStyle={{ flexGrow: 1, borderRadius: '16px' }}
               viewState={initialViewState}>
-              {bars.map(({ name, latitude, longitude }) => (
+              {bars.map(({ name, latitude, longitude }, i) => (
                 <BarMarker
+                  onClick={(e) =>
+                    handleBarClick(e, { latitude, longitude, id: i })
+                  }
                   key={name}
                   latitude={latitude}
                   longitude={longitude}
                 />
               ))}
               {hoverInfo && <HoverInfoCard {...hoverInfo} />}
-              <ZipcodeLayer
-                selectedFeature={getSelectedFeature('zipcode-layer')}
-                legends={legends}
-              />
-              <NeigborhoodPolygonLayer
-                selectedFeature={getSelectedFeature('neighbourhood-layer')}
-                legends={legends}
-              />
-              <NeighborhoodPointLayer
-                selectedFeature={getSelectedFeature('neighbourhood-point-id')}
-                legends={legends}
+              <MapLayersContainer
+                visibleLayers={legends}
+                onSelectedFeature={getSelectedFeature}
               />
               <LegendUI
                 items={legends}
@@ -143,57 +78,24 @@ function App() {
               />
             </MapContainer>
           </div>
-          <div className='py-2 rounded-2xl bg-gray-900 w-1/3 overflow-y-auto max-h-150 lg:max-h-117 scrollbar-none flex'>
-            <NeighborhoodInfoUI
-              {...sidePanel}
-              explore={explore}
-              onExplore={handleExplore}
-            />
-
-            <BarsInfoUI
-              explore={explore}
-              // @ts-ignore
-              selected={selected}
-              onExpand={handleExpand}
-            />
-          </div>
+          <SidePanel
+            {...sidePanel}
+            explore={explore}
+            onExpand={handleSelectBar}
+            onExplore={handleExplore}
+            selectedBar={selectedBar}
+          />
         </div>
       </div>
+      <MobileDrawer
+        {...sidePanel}
+        explore={explore}
+        onExpand={handleSelectBar}
+        onExplore={handleExplore}
+        selectedBar={selectedBar}
+      />
     </div>
   );
 }
 
 export default App;
-
-function NeighborhoodInfoUI(
-  props: SidePanelQueue & {
-    onExplore?: (value: any) => void;
-    explore?: boolean;
-  },
-) {
-  return <NeighborhoodInfo {...props} />;
-}
-
-function BarsInfoUI(props: {
-  explore: boolean;
-  selected: string;
-  onExpand: (value: any) => void;
-}) {
-  const { explore, selected, onExpand } = props;
-  return (
-    <div
-      className={`transition-all duration-500 ${explore ? 'grow' : 'hidden'}`}>
-      {bars.map(({ name, address, description }, i) => (
-        <BarSideItem
-          key={i}
-          name={name}
-          address={address}
-          description={description}
-          id={i}
-          selected={selected}
-          onExpand={onExpand}
-        />
-      ))}
-    </div>
-  );
-}

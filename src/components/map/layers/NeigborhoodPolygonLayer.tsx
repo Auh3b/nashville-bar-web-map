@@ -1,33 +1,39 @@
 import { Layer, Source } from 'react-map-gl/mapbox';
 import { BaseLayerCopmponentProps } from '../utils/layer.types';
 
-const sourceId = 'zipcode-source';
-const layerId = 'zipcode-layer';
+const sourceId = 'neighbourhood-poly';
+const layerId = 'neighbourhood-layer';
 const url =
-  'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/nashville_zipcode_refined.json';
+  'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/nashville_neighbourhoods.geojson';
 
-export default function ZipcodeLayer(props: BaseLayerCopmponentProps) {
-  const { selectedFeature, legends } = props;
+export default function NeigborhoodPolygonLayer(
+  props: BaseLayerCopmponentProps,
+) {
+  const { selectedFeature, visibleLayers } = props;
   return (
     <Source
-      type='geojson'
       id={sourceId}
+      type={'geojson'}
       data={url}>
       <Layer
-        id={layerId}
         source={sourceId}
-        layout={{ visibility: legends?.includes(layerId) ? 'visible' : 'none' }}
-        type='fill'
-        paint={{ 'fill-color': '#f5c064', 'fill-opacity': 0.5 }}
+        type={'fill'}
+        id={layerId}
+        layout={{
+          visibility: visibleLayers?.includes(layerId) ? 'visible' : 'none',
+        }}
+        paint={{
+          'fill-color': '#23a667',
+          'fill-opacity': 0.5,
+        }}
       />
-
       {selectedFeature && (
         <Layer
           id={layerId + 'selected'}
           source={sourceId}
           type='fill'
           layout={{
-            visibility: legends?.includes(layerId) ? 'visible' : 'none',
+            visibility: visibleLayers?.includes(layerId) ? 'visible' : 'none',
           }}
           filter={[
             '==',

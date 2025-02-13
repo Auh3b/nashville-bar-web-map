@@ -1,10 +1,4 @@
-export interface NeighborhoodInfoProps {
-  id?: any;
-  name?: string;
-  description?: string;
-  onExplore?: (id: any) => void;
-  explore?: boolean;
-}
+import { NeighborhoodInfoProps } from '../../utils/component.types';
 
 export default function NeighborhoodInfo(props: NeighborhoodInfoProps) {
   const {

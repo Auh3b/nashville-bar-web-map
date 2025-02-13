@@ -1,5 +1,5 @@
 import { Layer, Source } from 'react-map-gl/mapbox';
-import { BaseLayerCopmponentProps } from '../utils/layer.types';
+import { BaseLayerCopmponentProps } from '../../../utils/layer.types';
 
 const sourceId = 'neighbourhood-point';
 const layerId = 'neighbourhood-point-id';
@@ -8,7 +8,7 @@ const url =
 export default function NeighborhoodPointLayer(
   props: BaseLayerCopmponentProps,
 ) {
-  const { selectedFeature, legends } = props;
+  const { selectedFeature, visibleLayers } = props;
   return (
     <Source
       id={sourceId}
@@ -18,7 +18,9 @@ export default function NeighborhoodPointLayer(
         id={layerId}
         source={sourceId}
         type='circle'
-        layout={{ visibility: legends?.includes(layerId) ? 'visible' : 'none' }}
+        layout={{
+          visibility: visibleLayers?.includes(layerId) ? 'visible' : 'none',
+        }}
         paint={{
           'circle-radius': 10,
           'circle-color': '#4b75f2',
@@ -33,7 +35,7 @@ export default function NeighborhoodPointLayer(
           source={sourceId}
           type='circle'
           layout={{
-            visibility: legends?.includes(layerId) ? 'visible' : 'none',
+            visibility: visibleLayers?.includes(layerId) ? 'visible' : 'none',
           }}
           filter={[
             '==',
