@@ -3,10 +3,9 @@ import { BarInfoUIProps } from '../../utils/component.types';
 import BarSideItem from './BarSideItem';
 
 export default function BarsInfoUI(props: BarInfoUIProps) {
-  const { explore, selectedBar, onExpand } = props;
+  const { selectedBar, onExpand } = props;
   return (
-    <div
-      className={`transition-all duration-500 ${explore ? 'grow' : 'hidden'}`}>
+    <div className={`transition-all duration-500 w-full`}>
       {bars.map(({ name, address, description }, i) => (
         <BarSideItem
           key={i}

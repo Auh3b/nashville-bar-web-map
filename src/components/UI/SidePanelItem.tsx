@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react';
 
 interface SidePanelItemProps {
+  id: string;
   width: number;
   height: number;
 }
@@ -8,6 +9,13 @@ interface SidePanelItemProps {
 export default function SidePanelItem(
   props: PropsWithChildren<SidePanelItemProps>,
 ) {
-  const { width, height, children } = props;
-  return <div style={{ width, height }}>{children}</div>;
+  const { width, height, children, id } = props;
+  return (
+    <div
+      id={id}
+      className='snap-center overflow-y-auto scrollbar-none'
+      style={{ minWidth: width, minHeight: height }}>
+      {children}
+    </div>
+  );
 }

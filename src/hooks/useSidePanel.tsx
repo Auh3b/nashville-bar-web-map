@@ -5,6 +5,7 @@ import { LAYER_PROPERTY_MAP } from '../utils/mapHandlers';
 import { SidePanelQueue } from '../utils/component.types';
 import { getBounds } from '../utils/geoFuncs';
 import { bars } from '../data/database';
+import { scrollToId } from '../utils/domfuncs';
 
 export default function useSidePanel() {
   const mapRef = useRef<MapRef | null>(null);
@@ -18,7 +19,11 @@ export default function useSidePanel() {
       setSelectedBar(value);
       if (mapRef.current && value) {
         const { latitude, longitude } = bars[value];
-        mapRef.current.flyTo({ center: [longitude, latitude], padding: 2 });
+        mapRef.current.flyTo({
+          center: [longitude, latitude],
+          padding: 2,
+          zoom: 15,
+        });
       }
     },
     [mapRef.current],
@@ -40,18 +45,27 @@ export default function useSidePanel() {
 
       setsidePanel({ id: value, name: value });
 
+      scrollToId('neighborhood');
+
       if (mapRef.current) {
         const bounds = getBounds(e.features[0]);
         // @ts-ignore
-        mapRef.current.fitBounds(bounds);
+        mapRef.current.fitBounds(bounds, { padding: 20 });
       }
     },
     [mapRef.current],
   );
 
-  const handleExplore = (value: any) => {
-    setExplore(value);
-  };
+  const handleExplore = useCallback(
+    (value: any) => {
+      setExplore(value);
+      scrollToId('bars');
+      if (mapRef.current) {
+        mapRef.current.flyTo({ zoom: 13.1 });
+      }
+    },
+    [mapRef.current],
+  );
 
   const handleBarClick = useCallback(
     (

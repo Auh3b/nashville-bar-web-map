@@ -3,12 +3,12 @@ import BarMarker from './components/map/BarMarker';
 import MapContainer from './components/map/MapContainer';
 import { bars } from './data/database';
 import { ViewState } from 'react-map-gl/mapbox';
-import HoverInfoCard from './components/UI/HoverInfoCard';
+// import HoverInfoCard from './components/UI/HoverInfoCard';
 import LegendUI from './components/map/LegendUI';
 import useLegends from './hooks/useLegends';
 import useCursor from './hooks/useCursor';
 import MapLayersContainer from './components/map/layers';
-import useHoverInfo from './hooks/useHoverInfo';
+// import useHoverInfo from './hooks/useHoverInfo';
 import useSidePanel from './hooks/useSidePanel';
 import SidePanel from './components/UI/SidePanel';
 import MobileDrawer from './components/UI/MobileDrawer';
@@ -25,7 +25,7 @@ const initialViewState: ViewState = {
 function App() {
   const { legends, handleLegendToggle } = useLegends();
   const { cursor, handleMouseEnter, handleMouseLeave } = useCursor();
-  const { hoverInfo, handleMouseMove } = useHoverInfo();
+  // const { hoverInfo, handleMouseMove } = useHoverInfo();
   const {
     mapRef,
     sidePanel,
@@ -51,7 +51,7 @@ function App() {
                 cursor,
                 interactiveLayerIds: legends,
                 onClick: handleClick,
-                onMouseMove: handleMouseMove,
+                // onMouseMove: handleMouseMove,
                 onMouseEnter: handleMouseEnter,
                 onMouseLeave: handleMouseLeave,
               }}
@@ -67,7 +67,7 @@ function App() {
                   longitude={longitude}
                 />
               ))}
-              {hoverInfo && <HoverInfoCard {...hoverInfo} />}
+              {/* {hoverInfo && <HoverInfoCard {...hoverInfo} />} */}
               <MapLayersContainer
                 visibleLayers={legends}
                 onSelectedFeature={getSelectedFeature}

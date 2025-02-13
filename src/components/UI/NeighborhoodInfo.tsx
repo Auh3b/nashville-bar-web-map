@@ -6,16 +6,12 @@ export default function NeighborhoodInfo(props: NeighborhoodInfoProps) {
     name,
     description = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure vitae, animi neque illum nesciunt amet excepturi ab optio rerum alias.',
     onExplore,
-    explore = false,
   } = props;
   const handleExplore = () => {
     if (onExplore) onExplore(true);
   };
   return (
-    <div
-      className={`flex flex-col gap-4 tranasition all ${
-        !id ? 'hidden' : explore ? 'hidden' : 'grow'
-      }`}>
+    <div className={`flex flex-col gap-4 tranasition all w-full`}>
       <span className='text-xs uppercase border-b border-b-slate-700 p-4'>
         {name ? name : id}
       </span>
