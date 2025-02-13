@@ -34,9 +34,7 @@ export default function MobileDrawer(props: SidePanelProps) {
   return (
     <div
       ref={containerRef}
-      className={`md:hidden ${
-        !sidePanel.id && 'hidden'
-      } bg-slate-950 text-white fixed transition-all duration-300 rounded-t-2xl z-50 w-screen  ${
+      className={`md:hidden bg-slate-950 text-white fixed transition-all duration-300 rounded-t-2xl z-50 w-screen  ${
         open ? '-bottom-5 h-full' : 'bottom-0 h-12'
       }`}>
       <div className='flex justify-end'>
