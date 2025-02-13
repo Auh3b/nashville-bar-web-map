@@ -1,5 +1,5 @@
 import { Layer, Source } from 'react-map-gl/mapbox';
-import { BaseLayerCopmponentProps } from '../utils/layer.types';
+import { BaseLayerCopmponentProps } from '../../../utils/layer.types';
 
 const sourceId = 'zipcode-source';
 const layerId = 'zipcode-layer';

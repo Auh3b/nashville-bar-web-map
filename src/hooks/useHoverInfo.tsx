@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { HoverInfoCardProps } from '../components/UI/HoverInfoCard';
 import { MapMouseEvent } from 'react-map-gl/mapbox';
 import { LAYER_PROPERTY_MAP } from '../utils/mapHandlers';
