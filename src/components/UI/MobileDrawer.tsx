@@ -10,14 +10,17 @@ export default function MobileDrawer(props: SidePanelProps) {
   const { explore, onExpand, selectedBar, onExplore, ...sidePanel } = props;
   const containerRef = useRef(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
+
   const handleToggle = () => {
     setOpen((prev) => !prev);
   };
+
   const handleSizeChange = (e: HTMLDivElement) => {
     const height = e.clientHeight;
     const width = e.clientWidth;
     setSize({ width, height });
   };
+
   useEffect(() => {
     if (containerRef.current) {
       handleSizeChange(containerRef.current);

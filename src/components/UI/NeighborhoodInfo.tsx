@@ -8,7 +8,7 @@ export default function NeighborhoodInfo(props: NeighborhoodInfoProps) {
     onExplore,
   } = props;
   const handleExplore = () => {
-    if (onExplore) onExplore(true);
+    if (onExplore) onExplore(name);
   };
   return (
     <div className={`flex flex-col gap-4 tranasition all w-full`}>

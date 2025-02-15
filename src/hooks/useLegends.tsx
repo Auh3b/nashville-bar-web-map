@@ -4,6 +4,7 @@ const legendItems = [
   'neighbourhood-layer',
   'neighbourhood-point-id',
   'zipcode-layer',
+  'bars-layer',
 ];
 export default function useLegends() {
   const [legends, setLegends] = useState(legendItems);

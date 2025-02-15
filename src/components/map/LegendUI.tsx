@@ -4,20 +4,15 @@ interface LegendUIProps {
 }
 
 const legendItems = {
-  // 'neighbourhood-layer': {
-  //   id: 'neighbourhood-layer',
-  //   name: 'Neighbourhood Poly',
-  //   color: '#23a667',
-  // },
-  // 'neighbourhood-point-id': {
-  //   id: 'neighbourhood-point-id',
-  //   name: 'Neighbourhood Circle',
-  //   color: '#4b75f2',
-  // },
-  'zipcode-layer': {
-    id: 'zipcode-layer',
-    name: 'Zipcode Poly',
-    color: '#f5c064',
+  'neighbourhood-layer': {
+    id: 'neighbourhood-layer',
+    name: 'Neighbourhood Poly',
+    color: '#23a667',
+  },
+  'bars-layer': {
+    id: 'bars-layer',
+    name: 'Bars',
+    color: '#4b75f2',
   },
 };
 

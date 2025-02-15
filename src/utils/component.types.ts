@@ -4,7 +4,7 @@ export interface SidePanelQueue {
 }
 
 export interface BarInfoUIProps {
-  explore?: boolean;
+  explore?: string;
   selectedBar: number | null;
   onExpand: (value: any) => void;
 }
@@ -14,7 +14,7 @@ export interface NeighborhoodInfoProps {
   name?: string;
   description?: string;
   onExplore?: (id: any) => void;
-  explore?: boolean;
+  explore?: string;
 }
 
 export type SidePanelProps = BarInfoUIProps & NeighborhoodInfoProps;

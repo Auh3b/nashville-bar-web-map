@@ -1,14 +1,10 @@
 import './App.css';
-import BarMarker from './components/map/BarMarker';
 import MapContainer from './components/map/MapContainer';
-import { bars } from './data/database';
 import { ViewState } from 'react-map-gl/mapbox';
-// import HoverInfoCard from './components/UI/HoverInfoCard';
 import LegendUI from './components/map/LegendUI';
 import useLegends from './hooks/useLegends';
 import useCursor from './hooks/useCursor';
 import MapLayersContainer from './components/map/layers';
-// import useHoverInfo from './hooks/useHoverInfo';
 import useSidePanel from './hooks/useSidePanel';
 import SidePanel from './components/UI/SidePanel';
 import MobileDrawer from './components/UI/MobileDrawer';
@@ -16,7 +12,7 @@ import MobileDrawer from './components/UI/MobileDrawer';
 const initialViewState: ViewState = {
   longitude: -86.8110513,
   latitude: 36.1595261,
-  zoom: 10,
+  zoom: 11,
   bearing: 0,
   pitch: 0,
   padding: { top: 0, bottom: 0, left: 0, right: 0 },
@@ -25,7 +21,6 @@ const initialViewState: ViewState = {
 function App() {
   const { legends, handleLegendToggle } = useLegends();
   const { cursor, handleMouseEnter, handleMouseLeave } = useCursor();
-  // const { hoverInfo, handleMouseMove } = useHoverInfo();
   const {
     mapRef,
     sidePanel,
@@ -35,7 +30,6 @@ function App() {
     handleExplore,
     handleClick,
     getSelectedFeature,
-    handleBarClick,
   } = useSidePanel();
 
   return (
@@ -51,24 +45,13 @@ function App() {
                 cursor,
                 interactiveLayerIds: legends,
                 onClick: handleClick,
-                // onMouseMove: handleMouseMove,
                 onMouseEnter: handleMouseEnter,
                 onMouseLeave: handleMouseLeave,
               }}
               CSSStyle={{ flexGrow: 1, borderRadius: '16px' }}
               viewState={initialViewState}>
-              {bars.map(({ name, latitude, longitude }, i) => (
-                <BarMarker
-                  onClick={(e) =>
-                    handleBarClick(e, { latitude, longitude, id: i })
-                  }
-                  key={name}
-                  latitude={latitude}
-                  longitude={longitude}
-                />
-              ))}
-              {/* {hoverInfo && <HoverInfoCard {...hoverInfo} />} */}
               <MapLayersContainer
+                explore={explore}
                 visibleLayers={legends}
                 onSelectedFeature={getSelectedFeature}
               />

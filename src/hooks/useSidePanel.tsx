@@ -10,7 +10,7 @@ import { scrollToId } from '../utils/domfuncs';
 export default function useSidePanel() {
   const mapRef = useRef<MapRef | null>(null);
   const [sidePanel, setsidePanel] = useState<SidePanelQueue>({});
-  const [explore, setExplore] = useState(false);
+  const [explore, setExplore] = useState('');
   const { getSelectedFeature, handleSelectedFeature } = useSelectedFeature();
 
   const [selectedBar, setSelectedBar] = useState<null | number>(null);
@@ -32,7 +32,7 @@ export default function useSidePanel() {
   const handleClick = useCallback(
     (e: MapMouseEvent) => {
       if (!e.features?.length) return;
-      setExplore(false);
+      setExplore('');
       const layerId = e.features[0].layer?.id || '';
       const column = LAYER_PROPERTY_MAP[layerId];
       const value = e.features[0].properties?.[column];
@@ -50,7 +50,7 @@ export default function useSidePanel() {
       if (mapRef.current) {
         const bounds = getBounds(e.features[0]);
         // @ts-ignore
-        mapRef.current.fitBounds(bounds, { padding: 20 });
+        mapRef.current.fitBounds(bounds, { padding: 20, maxZoom: 12.9 });
       }
     },
     [mapRef.current],
@@ -73,7 +73,6 @@ export default function useSidePanel() {
       t: { latitude: number; longitude: number; id: number },
     ) => {
       const { latitude, longitude, id } = t;
-      setExplore(true);
       setSelectedBar(id);
       if (mapRef.current) {
         mapRef.current.flyTo({ center: [longitude, latitude], padding: 20 });
