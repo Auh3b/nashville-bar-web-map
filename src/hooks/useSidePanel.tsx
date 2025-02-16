@@ -10,7 +10,8 @@ export default function useSidePanel() {
   const mapRef = useRef<MapRef | null>(null);
   const [sidePanel, setsidePanel] = useState<SidePanelQueue>({});
   const [explore, setExplore] = useState('');
-  const { getSelectedFeature, handleSelectedFeature } = useSelectedFeature();
+  const { getSelectedFeature, handleSelectedFeature, removeSelectedFeature } =
+    useSelectedFeature();
   const [started, setStarted] = useState(false);
 
   const [selectedBar, setSelectedBar] = useState<null | number>(null);
@@ -68,6 +69,8 @@ export default function useSidePanel() {
   ) {
     if (!started) setStarted(true);
     setExplore('');
+    setSelectedBar(null);
+    removeSelectedFeature('bars-layer');
     const id = feature.properties?.['id'];
     const name = feature.properties?.['name'];
     handleSelectedFeature({

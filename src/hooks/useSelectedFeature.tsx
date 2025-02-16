@@ -12,8 +12,17 @@ export default function useSelectedFeature() {
   const handleSelectedFeature = (value: null | SelectedFeatures) => {
     setSelectedFeatureId((prev) => ({ ...prev, ...value }));
   };
+  const removeSelectedFeature = useCallback(
+    (id: string) => {
+      const features = { ...selectedFeatureId };
+      if (features[id]) delete features[id];
+      setSelectedFeatureId(features);
+    },
+    [selectedFeatureId],
+  );
   return {
     getSelectedFeature,
     handleSelectedFeature,
+    removeSelectedFeature,
   };
 }

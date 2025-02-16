@@ -3,6 +3,9 @@ import { FaPlus } from 'react-icons/fa6';
 import { FaMinus } from 'react-icons/fa6';
 import { TiHome } from 'react-icons/ti';
 import { useMap, ViewState } from 'react-map-gl/mapbox';
+
+const iconSize = 20;
+
 export default function MapNav(props: { initialViewState: ViewState }) {
   const { initialViewState } = props;
   const { current: map } = useMap();
@@ -24,17 +27,23 @@ export default function MapNav(props: { initialViewState: ViewState }) {
       <button
         className='button p-1'
         onClick={handleZoomIn}>
-        <FaPlus size={16} />
+        <FaPlus
+          className=''
+          size={iconSize}
+        />
       </button>
       <button
         className='button p-1 border-t border-dark'
         onClick={handleZoomOut}>
-        <FaMinus size={16} />
+        <FaMinus
+          className=''
+          size={iconSize}
+        />
       </button>
       <button
         className='button p-1 border-t border-dark'
         onClick={handleResetView}>
-        <TiHome size={16} />
+        <TiHome size={iconSize} />
       </button>
     </div>
   );
