@@ -11,6 +11,7 @@ export default function useSidePanel() {
   const [sidePanel, setsidePanel] = useState<SidePanelQueue>({});
   const [explore, setExplore] = useState('');
   const { getSelectedFeature, handleSelectedFeature } = useSelectedFeature();
+  const [started, setStarted] = useState(false);
 
   const [selectedBar, setSelectedBar] = useState<null | number>(null);
   const handleSelectBar = useCallback(
@@ -65,6 +66,7 @@ export default function useSidePanel() {
     layerId: string,
     mapRef: MapRef | null,
   ) {
+    if (!started) setStarted(true);
     setExplore('');
     const id = feature.properties?.['id'];
     const name = feature.properties?.['name'];
@@ -107,6 +109,7 @@ export default function useSidePanel() {
   }
 
   return {
+    started,
     mapRef,
     handleClick,
     handleSelectBar,

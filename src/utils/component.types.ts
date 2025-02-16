@@ -10,6 +10,7 @@ export interface BarInfoUIProps {
 }
 
 export interface NeighborhoodInfoProps {
+  started?: boolean;
   id?: any;
   name?: string;
   description?: string;

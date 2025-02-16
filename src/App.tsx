@@ -24,20 +24,21 @@ function App() {
   const { legends, handleLegendToggle } = useLegends();
   const { cursor, handleMouseEnter, handleMouseLeave } = useCursor();
   const {
-    mapRef,
-    sidePanel,
     explore,
+    mapRef,
     selectedBar,
-    handleSelectBar,
-    handleExplore,
-    handleClick,
+    sidePanel,
+    started,
     getSelectedFeature,
+    handleClick,
+    handleExplore,
+    handleSelectBar,
   } = useSidePanel();
   return (
     <div className='flex items-center justify-center w-screen h-screen bg-gradient-to-br from-emerald-950 to-black md:p-4'>
       <div className='flex flex-col bg-teal-900 p-4 md:rounded-3xl text-white w-full h-full lg:w-2/3 shadow'>
         <Header explore={explore} />
-        <div className='flex grow gap-4'>
+        <div className='flex grow md:gap-4'>
           <div className='grow'>
             <MapContainer
               mapProps={{
@@ -65,6 +66,7 @@ function App() {
           </div>
           <SidePanel
             {...sidePanel}
+            started={started}
             explore={explore}
             onExpand={handleSelectBar}
             onExplore={handleExplore}
@@ -73,6 +75,7 @@ function App() {
         </div>
       </div>
       <MobileDrawer
+        started={started}
         {...sidePanel}
         explore={explore}
         onExpand={handleSelectBar}

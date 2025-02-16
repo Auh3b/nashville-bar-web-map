@@ -8,7 +8,7 @@ interface Size {
 }
 
 export default function useResize(ref: RefObject<HTMLElement | null>) {
-  const [size, setResize] = useDebounce<Size>({ width: 0, height: 0 }, 100);
+  const [size, setResize] = useDebounce<Size>({ width: 0, height: 0 }, 300);
 
   const getSize = (e: DOMRectReadOnly) => {
     const { width, height } = e;

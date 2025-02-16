@@ -20,7 +20,7 @@ export default function LegendUI(props: LegendUIProps) {
   const { items, onToggle } = props;
   const handleToggle = (value: string) => () => onToggle(value);
   return (
-    <div className='absolute bottom-4 right-4 flex flex-col text-sm bg-slate-950 text-white rounded-xl pb-2'>
+    <div className='absolute hidden md:flex bottom-4 right-4  flex-col text-sm bg-slate-950 text-white rounded-xl pb-2'>
       <span className='font-medium px-4 py-2 border-b border-b-slate-600'>
         Legend
       </span>
