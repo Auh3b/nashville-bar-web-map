@@ -21,10 +21,7 @@ export default function BarsInfoUI(props: BarInfoUIProps) {
       .then((data) =>
         setBars(
           // @ts-ignore
-          data.features.map(({ properties }) => ({
-            ...properties,
-            id: properties['name'].toLowerCase().replaceAll(' ', '_'),
-          })),
+          data.features.map(({ properties }) => properties),
         ),
       );
   }, []);
@@ -33,6 +30,7 @@ export default function BarsInfoUI(props: BarInfoUIProps) {
     () => (_bars.length ? _bars.filter(({ hood }) => hood === explore) : []),
     [_bars, explore],
   );
+
   return (
     <div className={`transition-all duration-500 w-full py-2`}>
       <p className='uppercase px-2 font-medium py-2 border-b border-slate-700'>

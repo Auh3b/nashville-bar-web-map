@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { NeighborhoodInfoProps } from '../../utils/component.types';
 
 export default function NeighborhoodInfo(props: NeighborhoodInfoProps) {
@@ -7,9 +8,9 @@ export default function NeighborhoodInfo(props: NeighborhoodInfoProps) {
     description = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure vitae, animi neque illum nesciunt amet excepturi ab optio rerum alias.',
     onExplore,
   } = props;
-  const handleExplore = () => {
+  const handleExplore = useCallback(() => {
     if (onExplore) onExplore(name);
-  };
+  }, [name]);
   return (
     <div className={`flex flex-col gap-4 tranasition all w-full`}>
       <span className='text-xs uppercase border-b border-b-slate-700 p-4'>
