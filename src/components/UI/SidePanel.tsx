@@ -1,25 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { SidePanelProps } from '../../utils/component.types';
 import BarsInfoUI from './BarsInfoUI';
 import NeighborhoodInfo from './NeighborhoodInfo';
 import SidePanelItem from './SidePanelItem';
+import useResize from '../../hooks/useResize';
 
 export default function SidePanel(props: SidePanelProps) {
   const { explore, onExpand, selectedBar, onExplore, ...sidePanel } = props;
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [size, setSize] = useState({ width: 0, height: 0 });
-
-  const handleSizeChange = (e: HTMLDivElement) => {
-    const height = e.clientHeight;
-    const width = e.clientWidth;
-    setSize({ width, height });
-  };
-  useEffect(() => {
-    if (containerRef.current) {
-      handleSizeChange(containerRef.current);
-    }
-  }, [containerRef.current]);
-
+  const { size } = useResize(containerRef);
   return (
     <div
       ref={containerRef}

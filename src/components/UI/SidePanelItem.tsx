@@ -13,7 +13,7 @@ export default function SidePanelItem(
   return (
     <div
       id={id}
-      className='snap-center overflow-y-auto scrollbar-none'
+      className='transition-all snap-center overflow-y-auto scrollbar-none'
       style={{ minWidth: width, minHeight: height }}>
       {children}
     </div>
