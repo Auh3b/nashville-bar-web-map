@@ -6,6 +6,7 @@ const layerId = 'bars-layer';
 const url =
   'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/nashville-bars-data.geojson';
 
+const minzoom = 13;
 export default function BarsLayer(
   props: BaseLayerCopmponentProps & { explore?: string },
 ) {
@@ -22,6 +23,7 @@ export default function BarsLayer(
         layout={{
           visibility: visibility,
         }}
+        minzoom={minzoom}
         filter={['==', ['get', 'hood'], explore]}
         type='circle'
         paint={{
@@ -38,6 +40,7 @@ export default function BarsLayer(
           id={layerId + 'selected'}
           source={sourceId}
           type='circle'
+          minzoom={minzoom}
           layout={{
             visibility: visibility,
           }}
@@ -58,6 +61,7 @@ export default function BarsLayer(
         id={layerId + '_text'}
         source={sourceId}
         filter={['==', ['get', 'hood'], explore]}
+        minzoom={minzoom}
         layout={{
           visibility: visibility,
           'text-field': ['get', 'name'],

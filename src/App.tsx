@@ -8,6 +8,7 @@ import MapLayersContainer from './components/map/layers';
 import useSidePanel from './hooks/useSidePanel';
 import SidePanel from './components/UI/SidePanel';
 import MobileDrawer from './components/UI/MobileDrawer';
+import Header from './components/UI/Header';
 
 const initialViewState: ViewState = {
   longitude: -86.8110513,
@@ -34,9 +35,9 @@ function App() {
 
   return (
     <div className='flex items-center justify-center w-screen h-screen bg-gradient-to-br from-emerald-950 to-black md:p-4'>
-      <div className='flex flex-col bg-teal-900 p-4 md:rounded-3xl text-white w-full h-full lg:w-2/3 lg:h-4/5 shadow'>
-        <p className='mb-4'>Welcome to blog</p>
-        <div className='flex grow gap-4 w-full'>
+      <div className='flex flex-col bg-teal-900 p-4 md:rounded-3xl text-white w-full h-full lg:w-2/3 shadow'>
+        <Header explore={explore} />
+        <div className='flex grow gap-4'>
           <div className='grow'>
             <MapContainer
               mapProps={{

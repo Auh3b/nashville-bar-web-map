@@ -17,9 +17,9 @@ export default function NeighborhoodInfo(props: NeighborhoodInfoProps) {
       </span>
       <span className='text-xs my-2 px-4'>{description}</span>
       <button
-        className='hover:cursor-pointer border border-slate-50 self-start py-2 px-3 rounded-3xl ml-4'
+        className='hover:cursor-pointer border border-slate-600 hover:border-slate-100 transition-all duration-500 ease-in-out self-start py-2 px-3 rounded-full ml-4'
         onClick={handleExplore}>
-        Explore
+        Explore Bars
       </button>
     </div>
   );

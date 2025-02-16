@@ -7,20 +7,31 @@ interface BarSideItemProps {
   address: string;
   description: string;
   selected: any;
-  onExpand: (value: any) => void;
+  latitude: number;
+  longitude: number;
+  onExpand: (value: any, center?: number[]) => void;
 }
 
 export default function BarSideItem(
   props: PropsWithChildren<BarSideItemProps>,
 ) {
-  const { id, name, address, description, selected, onExpand } = props;
+  const {
+    id,
+    name,
+    address,
+    description,
+    selected,
+    onExpand,
+    latitude,
+    longitude,
+  } = props;
 
   const open = selected == id;
   const handleClick = useCallback(() => {
     if (open) {
       onExpand(null);
     } else {
-      onExpand(id);
+      onExpand(id, [longitude, latitude]);
     }
   }, [selected, open]);
 

@@ -19,8 +19,13 @@ export default function BarsInfoUI(props: BarInfoUIProps) {
     )
       .then((res) => res.json())
       .then((data) =>
-        // @ts-ignore
-        setBars(data.features.map(({ properties }) => properties)),
+        setBars(
+          // @ts-ignore
+          data.features.map(({ properties }) => ({
+            ...properties,
+            id: properties['name'].toLowerCase().replaceAll(' ', '_'),
+          })),
+        ),
       );
   }, []);
 
@@ -29,14 +34,19 @@ export default function BarsInfoUI(props: BarInfoUIProps) {
     [_bars, explore],
   );
   return (
-    <div className={`transition-all duration-500 w-full`}>
-      {bars.map(({ name, address, description }, i) => (
+    <div className={`transition-all duration-500 w-full py-2`}>
+      <p className='uppercase px-2 font-medium py-2 border-b border-slate-700'>
+        bars
+      </p>
+      {bars.map(({ id, name, address, description, latitude, longitude }) => (
         <BarSideItem
-          key={i}
+          key={id}
           name={name}
           address={address}
           description={description}
-          id={i}
+          latitude={latitude}
+          longitude={longitude}
+          id={id}
           selected={selectedBar}
           onExpand={onExpand}>
           <div className='px-4'>

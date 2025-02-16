@@ -1,11 +1,11 @@
 import { useCallback, useRef, useState } from 'react';
 import useSelectedFeature from './useSelectedFeature';
-import { MapMouseEvent, MapRef, MarkerEvent } from 'react-map-gl/mapbox';
+import { MapMouseEvent, MapRef } from 'react-map-gl/mapbox';
 import { LAYER_PROPERTY_MAP } from '../utils/mapHandlers';
 import { SidePanelQueue } from '../utils/component.types';
 import { getBounds } from '../utils/geoFuncs';
-import { bars } from '../data/database';
 import { scrollToId } from '../utils/domfuncs';
+import { Feature } from 'geojson';
 
 export default function useSidePanel() {
   const mapRef = useRef<MapRef | null>(null);
@@ -15,14 +15,14 @@ export default function useSidePanel() {
 
   const [selectedBar, setSelectedBar] = useState<null | number>(null);
   const handleSelectBar = useCallback(
-    (value: number | null) => {
+    (value: number | null, center?: number[]) => {
       setSelectedBar(value);
-      if (mapRef.current && value) {
-        const { latitude, longitude } = bars[value];
+      if (mapRef.current) {
         mapRef.current.flyTo({
-          center: [longitude, latitude],
+          // @ts-ignore
+          center,
           padding: 2,
-          zoom: 15,
+          zoom: 18,
         });
       }
     },
@@ -32,26 +32,12 @@ export default function useSidePanel() {
   const handleClick = useCallback(
     (e: MapMouseEvent) => {
       if (!e.features?.length) return;
-      setExplore('');
+      const feature = e.features[0];
       const layerId = e.features[0].layer?.id || '';
-      const column = LAYER_PROPERTY_MAP[layerId];
-      const value = e.features[0].properties?.[column];
-      handleSelectedFeature({
-        [layerId]: {
-          property: column,
-          value,
-        },
-      });
-
-      setsidePanel({ id: value, name: value });
-
-      scrollToId('neighborhood');
-
-      if (mapRef.current) {
-        const bounds = getBounds(e.features[0]);
-        // @ts-ignore
-        mapRef.current.fitBounds(bounds, { padding: 20, maxZoom: 12.9 });
+      if (layerId === 'neighbourhood-layer') {
+        return HandleHoodClick(feature, layerId, mapRef.current);
       }
+      return handleBarClick(layerId, feature, mapRef.current);
     },
     [mapRef.current],
   );
@@ -67,19 +53,53 @@ export default function useSidePanel() {
     [mapRef.current],
   );
 
-  const handleBarClick = useCallback(
-    (
-      _e: MarkerEvent<MouseEvent>,
-      t: { latitude: number; longitude: number; id: number },
-    ) => {
-      const { latitude, longitude, id } = t;
-      setSelectedBar(id);
-      if (mapRef.current) {
-        mapRef.current.flyTo({ center: [longitude, latitude], padding: 20 });
-      }
-    },
-    [mapRef.current],
-  );
+  function HandleHoodClick(
+    feature: Feature,
+    layerId: string,
+    mapRef: MapRef | null,
+  ) {
+    setExplore('');
+    const column = LAYER_PROPERTY_MAP[layerId];
+    const value = feature.properties?.[column];
+    handleSelectedFeature({
+      [layerId]: {
+        property: column,
+        value,
+      },
+    });
+
+    setsidePanel({ id: value, name: value });
+
+    scrollToId('neighborhood');
+
+    if (mapRef) {
+      const bounds = getBounds(feature);
+      // @ts-ignore
+      mapRef.fitBounds(bounds, { padding: 20, maxZoom: 12.9 });
+    }
+  }
+
+  function handleBarClick(
+    layerId: string,
+    feature: Feature,
+    mapRef: MapRef | null,
+  ) {
+    // @ts-ignore
+    const { name, latitude, longitude } = feature?.properties;
+    const column = LAYER_PROPERTY_MAP[layerId];
+    const value = feature.properties?.[column];
+    handleSelectedFeature({
+      [layerId]: {
+        property: column,
+        value,
+      },
+    });
+    setSelectedBar(name.toLowerCase().replaceAll(' ', '_'));
+
+    if (mapRef) {
+      mapRef.flyTo({ center: [longitude, latitude], padding: 20 });
+    }
+  }
 
   return {
     mapRef,
@@ -90,6 +110,5 @@ export default function useSidePanel() {
     getSelectedFeature,
     explore,
     sidePanel,
-    handleBarClick,
   };
 }
