@@ -1,6 +1,6 @@
 export const LAYER_PROPERTY_MAP: { [k: string]: string } = {
-  ['neighbourhood-point-id']: 'name',
-  ['neighbourhood-layer']: 'name',
-  ['zipcode-layer']: 'zipcode',
-  ['bars-layer']: 'name',
+  ['neighbourhood-point-id']: 'id',
+  ['neighbourhood-layer']: 'id',
+  ['zipcode-layer']: 'id',
+  ['bars-layer']: 'id',
 };

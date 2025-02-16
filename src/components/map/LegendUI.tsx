@@ -7,12 +7,12 @@ const legendItems = {
   'neighbourhood-layer': {
     id: 'neighbourhood-layer',
     name: 'Neighbourhood Poly',
-    color: '#23a667',
+    color: '#9b3f69',
   },
   'bars-layer': {
     id: 'bars-layer',
     name: 'Bars',
-    color: '#4b75f2',
+    color: '#e6bb32',
   },
 };
 

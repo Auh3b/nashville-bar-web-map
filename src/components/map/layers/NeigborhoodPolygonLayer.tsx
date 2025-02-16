@@ -6,6 +6,7 @@ const layerId = 'neighbourhood-layer';
 const url =
   'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/nashville-neighbourhoods-custom.geojson';
 const maxzoom = 13;
+const color = '#9b3f69';
 export default function NeigborhoodPolygonLayer(
   props: BaseLayerCopmponentProps,
 ) {
@@ -17,6 +18,23 @@ export default function NeigborhoodPolygonLayer(
       type={'geojson'}
       data={url}>
       <Layer
+        id={layerId + '_text'}
+        source={sourceId}
+        maxzoom={maxzoom}
+        layout={{
+          visibility: visibility,
+          'text-field': ['get', 'name'],
+          'text-transform': 'uppercase',
+        }}
+        paint={{
+          'text-color': 'white',
+          'text-halo-width': 1,
+          'text-halo-color': color,
+          'text-opacity': 0.5,
+        }}
+        type='symbol'
+      />
+      <Layer
         id={layerId}
         source={sourceId}
         maxzoom={maxzoom}
@@ -24,7 +42,7 @@ export default function NeigborhoodPolygonLayer(
           visibility: visibility,
         }}
         type='fill'
-        paint={{ 'fill-color': '#23a667', 'fill-opacity': 0.1 }}
+        paint={{ 'fill-color': color, 'fill-opacity': 0.1 }}
       />
       <Layer
         id={layerId + '_line'}
@@ -34,7 +52,7 @@ export default function NeigborhoodPolygonLayer(
           visibility: visibility,
         }}
         type='line'
-        paint={{ 'line-color': '#23a667', 'line-width': 3 }}
+        paint={{ 'line-color': color, 'line-width': 3 }}
       />
 
       {selectedFeature && (
@@ -77,16 +95,6 @@ export default function NeigborhoodPolygonLayer(
           }}
         />
       )}
-      <Layer
-        id={layerId + '_text'}
-        source={sourceId}
-        maxzoom={maxzoom}
-        layout={{
-          visibility: visibility,
-          'text-field': ['get', 'name'],
-        }}
-        type='symbol'
-      />
     </Source>
   );
 }
