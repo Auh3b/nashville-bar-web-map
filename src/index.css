@@ -1,3 +1,27 @@
 @import 'tailwindcss';
 
 @plugin 'tailwind-scrollbar';
+
+.card-container {
+  @apply py-1 rounded-2xl;
+}
+
+.container-light {
+  @apply bg-gray-100 text-slate-900;
+}
+
+.container-dark {
+  @apply bg-slate-900 text-white;
+}
+
+.border-light {
+  @apply border-gray-100;
+}
+
+.border-dark {
+  @apply border-slate-700;
+}
+
+.button {
+  @apply hover:cursor-pointer;
+}

@@ -6,8 +6,8 @@ import { FaAnglesDown, FaAnglesUp } from 'react-icons/fa6';
 import SidePanelItem from './SidePanelItem';
 
 export default function MobileDrawer(props: SidePanelProps) {
-  const [open, setOpen] = useState(false);
   const { explore, onExpand, selectedBar, onExplore, ...sidePanel } = props;
+  const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
 
@@ -27,12 +27,13 @@ export default function MobileDrawer(props: SidePanelProps) {
     }
   }, [containerRef.current]);
 
-  const handleExplore = useCallback(() => {
-    if (size.width) {
-      const drawer = document.getElementById('mobile-drawer');
-      if (drawer) drawer.scrollLeft += size.width;
-    }
-  }, [size]);
+  const handleExplore = useCallback(
+    (name: string) => {
+      setOpen(false);
+      if (onExplore) onExplore(name);
+    },
+    [onExplore],
+  );
 
   return (
     <div
@@ -49,25 +50,28 @@ export default function MobileDrawer(props: SidePanelProps) {
       </div>
       <div
         id='mobile-drawer'
-        className='flex overflow-x-scroll  scrollbar-none snap-x scroll-smooth '>
-        <SidePanelItem
-          id='neighborhood'
-          {...size}>
-          <NeighborhoodInfo
-            {...sidePanel}
-            explore={explore}
-            onExplore={handleExplore}
-          />
-        </SidePanelItem>
-        <SidePanelItem
-          id='bars'
-          {...size}>
-          <BarsInfoUI
-            explore={explore}
-            selectedBar={selectedBar}
-            onExpand={onExpand}
-          />
-        </SidePanelItem>
+        className=' '>
+        {explore ? (
+          <SidePanelItem
+            id='bars'
+            {...size}>
+            <BarsInfoUI
+              explore={explore}
+              selectedBar={selectedBar}
+              onExpand={onExpand}
+            />
+          </SidePanelItem>
+        ) : (
+          <SidePanelItem
+            id='neighborhood'
+            {...size}>
+            <NeighborhoodInfo
+              {...sidePanel}
+              explore={explore}
+              onExplore={handleExplore}
+            />
+          </SidePanelItem>
+        )}
       </div>
     </div>
   );

@@ -9,14 +9,15 @@ import useSidePanel from './hooks/useSidePanel';
 import SidePanel from './components/UI/SidePanel';
 import MobileDrawer from './components/UI/MobileDrawer';
 import Header from './components/UI/Header';
+import MapNav from './components/map/MapNav';
 
 const initialViewState: ViewState = {
-  longitude: -86.8110513,
-  latitude: 36.1595261,
-  zoom: 11,
+  longitude: -86.78,
+  latitude: 36.18,
+  zoom: 11.25,
   bearing: 0,
   pitch: 0,
-  padding: { top: 0, bottom: 0, left: 0, right: 0 },
+  padding: { top: 20, bottom: 20, left: 20, right: 20 },
 };
 
 function App() {
@@ -32,7 +33,6 @@ function App() {
     handleClick,
     getSelectedFeature,
   } = useSidePanel();
-
   return (
     <div className='flex items-center justify-center w-screen h-screen bg-gradient-to-br from-emerald-950 to-black md:p-4'>
       <div className='flex flex-col bg-teal-900 p-4 md:rounded-3xl text-white w-full h-full lg:w-2/3 shadow'>
@@ -50,7 +50,7 @@ function App() {
                 onMouseLeave: handleMouseLeave,
               }}
               CSSStyle={{ flexGrow: 1, borderRadius: '16px' }}
-              viewState={initialViewState}>
+              initialViewState={initialViewState}>
               <MapLayersContainer
                 explore={explore}
                 visibleLayers={legends}
@@ -60,6 +60,7 @@ function App() {
                 items={legends}
                 onToggle={handleLegendToggle}
               />
+              <MapNav initialViewState={initialViewState} />
             </MapContainer>
           </div>
           <SidePanel

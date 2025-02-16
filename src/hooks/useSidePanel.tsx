@@ -1,7 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import useSelectedFeature from './useSelectedFeature';
 import { MapMouseEvent, MapRef } from 'react-map-gl/mapbox';
-import { LAYER_PROPERTY_MAP } from '../utils/mapHandlers';
 import { SidePanelQueue } from '../utils/component.types';
 import { getBounds } from '../utils/geoFuncs';
 import { scrollToId } from '../utils/domfuncs';
@@ -17,6 +16,14 @@ export default function useSidePanel() {
   const handleSelectBar = useCallback(
     (value: number | null, center?: number[]) => {
       setSelectedBar(value);
+      const layerId = 'bars-layer';
+      const column = 'id';
+      handleSelectedFeature({
+        [layerId]: {
+          property: column,
+          value,
+        },
+      });
       if (mapRef.current) {
         mapRef.current.flyTo({
           // @ts-ignore
@@ -59,16 +66,16 @@ export default function useSidePanel() {
     mapRef: MapRef | null,
   ) {
     setExplore('');
-    const column = LAYER_PROPERTY_MAP[layerId];
-    const value = feature.properties?.[column];
+    const id = feature.properties?.['id'];
+    const name = feature.properties?.['name'];
     handleSelectedFeature({
       [layerId]: {
-        property: column,
-        value,
+        property: 'id',
+        value: id,
       },
     });
 
-    setsidePanel({ id: value, name: value });
+    setsidePanel({ id, name });
 
     scrollToId('neighborhood');
 
@@ -85,16 +92,14 @@ export default function useSidePanel() {
     mapRef: MapRef | null,
   ) {
     // @ts-ignore
-    const { name, latitude, longitude } = feature?.properties;
-    const column = LAYER_PROPERTY_MAP[layerId];
-    const value = feature.properties?.[column];
+    const { latitude, longitude, id } = feature?.properties;
     handleSelectedFeature({
       [layerId]: {
-        property: column,
-        value,
+        property: 'id',
+        value: id,
       },
     });
-    setSelectedBar(name.toLowerCase().replaceAll(' ', '_'));
+    setSelectedBar(id);
 
     if (mapRef) {
       mapRef.flyTo({ center: [longitude, latitude], padding: 20 });
