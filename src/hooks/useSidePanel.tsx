@@ -9,6 +9,7 @@ import { Feature } from 'geojson';
 export default function useSidePanel() {
   const mapRef = useRef<MapRef | null>(null);
   const [sidePanel, setsidePanel] = useState<SidePanelQueue>({});
+  const [preview, setPreview] = useState<SidePanelQueue | null>({});
   const [explore, setExplore] = useState('');
   const { getSelectedFeature, handleSelectedFeature, removeSelectedFeature } =
     useSelectedFeature();
@@ -31,20 +32,19 @@ export default function useSidePanel() {
           // @ts-ignore
           center,
           padding: 2,
-          zoom: 18,
+          zoom: 16,
         });
       }
     },
     [mapRef.current],
   );
-
   const handleClick = useCallback(
     (e: MapMouseEvent) => {
       if (!e.features?.length) return;
       const feature = e.features[0];
       const layerId = e.features[0].layer?.id || '';
       if (layerId === 'neighbourhood-layer') {
-        return HandleHoodClick(feature, layerId, mapRef.current);
+        return handleHoodClick(feature, layerId, mapRef.current);
       }
       return handleBarClick(layerId, feature, mapRef.current);
     },
@@ -62,7 +62,7 @@ export default function useSidePanel() {
     [mapRef.current],
   );
 
-  function HandleHoodClick(
+  function handleHoodClick(
     feature: Feature,
     layerId: string,
     mapRef: MapRef | null,
@@ -107,19 +107,68 @@ export default function useSidePanel() {
     setSelectedBar(id);
 
     if (mapRef) {
-      mapRef.flyTo({ center: [longitude, latitude], padding: 20 });
+      mapRef.flyTo({ center: [longitude, latitude], padding: 2, zoom: 16 });
     }
   }
 
+  const handleEnter = (e: MapMouseEvent) => {
+    if (!e.features?.length) return;
+    const feature = e.features[0];
+    const layerId = e.features[0].layer?.id || '';
+    if (layerId !== 'neighbourhood-layer') return;
+
+    const id = feature.properties?.['id'];
+    const name = feature.properties?.['name'];
+    setPreview({ id, name });
+  };
+
+  const handleMove = (e: MapMouseEvent) => {
+    if (!e.features?.length) return;
+    const feature = e.features[0];
+    const layerId = e.features[0].layer?.id || '';
+    if (layerId === 'neighbourhood-layer') return handleHoodMove(feature);
+    return handleBarMove(feature);
+  };
+
+  const handleLeave = (e: MapMouseEvent) => {
+    if (!e.features?.length) return;
+    const layerId = e.features[0].layer?.id || '';
+    if (layerId === 'neighbourhood-layer') return handleHoodLeave();
+    return handleBarLeave();
+  };
+
+  function handleHoodMove(feature: Feature) {
+    const id = feature.properties?.['id'];
+    const name = feature.properties?.['name'];
+    scrollToId('neighborhood');
+    setPreview({ id, name });
+  }
+  function handleHoodLeave() {
+    setPreview(null);
+  }
+
+  function handleBarMove(feature: Feature) {
+    // @ts-ignore
+    const { latitude, longitude, id } = feature?.properties;
+    setPreview({ bar: id });
+  }
+  function handleBarLeave() {
+    setPreview(null);
+  }
+
   return {
+    preview,
+    explore,
     started,
     mapRef,
-    handleClick,
-    handleSelectBar,
-    handleExplore,
-    selectedBar,
-    getSelectedFeature,
-    explore,
     sidePanel,
+    selectedBar,
+    handleClick,
+    handleEnter,
+    handleExplore,
+    handleMove,
+    handleLeave,
+    handleSelectBar,
+    getSelectedFeature,
   };
 }

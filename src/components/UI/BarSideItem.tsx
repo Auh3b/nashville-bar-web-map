@@ -45,10 +45,10 @@ export default function BarSideItem(
       </div>
       <div
         className={` transition-all duration-500 ease-in-out  scrollbar-none ${
-          open ? 'max-h-64 overflow-scroll' : 'max-h-0 overflow-hidden'
+          open ? 'max-h-84 overflow-scroll' : 'max-h-0 overflow-hidden'
         }`}>
-        <div className='mb-4 p-4 text-sm'>📌{address}</div>
-        <div className='p-4 text-xs'>{description}</div>
+        <div className='mb-4 px-4 pt-4 text-sm'>📌{address}</div>
+        <div className='px-4 mb-4 text-xs'>{description}</div>
 
         {props.children}
       </div>

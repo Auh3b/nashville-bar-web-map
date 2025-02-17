@@ -24,6 +24,7 @@ function App() {
   const { legends, handleLegendToggle } = useLegends();
   const { cursor, handleMouseEnter, handleMouseLeave } = useCursor();
   const {
+    preview,
     explore,
     mapRef,
     selectedBar,
@@ -33,6 +34,9 @@ function App() {
     handleClick,
     handleExplore,
     handleSelectBar,
+    handleEnter,
+    handleLeave,
+    handleMove,
   } = useSidePanel();
   return (
     <div className='flex items-center justify-center w-screen h-screen bg-gradient-to-br from-emerald-950 to-black md:p-4'>
@@ -47,8 +51,9 @@ function App() {
                 cursor,
                 interactiveLayerIds: legends,
                 onClick: handleClick,
-                onMouseEnter: handleMouseEnter,
-                onMouseLeave: handleMouseLeave,
+                onMouseEnter: (e) => handleMouseEnter(e, [handleEnter]),
+                onMouseLeave: (e) => handleMouseLeave(e, [handleLeave]),
+                onMouseMove: handleMove,
               }}
               CSSStyle={{ flexGrow: 1, borderRadius: '16px' }}
               initialViewState={initialViewState}>
@@ -65,6 +70,7 @@ function App() {
             </MapContainer>
           </div>
           <SidePanel
+            preview={preview}
             {...sidePanel}
             started={started}
             explore={explore}
@@ -75,6 +81,7 @@ function App() {
         </div>
       </div>
       <MobileDrawer
+        preview={preview}
         started={started}
         {...sidePanel}
         explore={explore}

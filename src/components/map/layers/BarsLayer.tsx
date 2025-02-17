@@ -28,7 +28,6 @@ export default function BarsLayer(
         if (!mapRef?.current?.hasImage(iconName)) {
           // @ts-expect-error
           mapRef.current.addImage(iconName, image, { sdf: true });
-          console.log('added');
         }
       });
     }

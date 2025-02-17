@@ -1,17 +1,10 @@
 import { BarInfoUIProps } from '../../utils/component.types';
 import BarSideItem from './BarSideItem';
-import ImageContainer from '../common/ImageContainer';
 import { useEffect, useMemo, useState } from 'react';
-
-const images: string[] = [
-  'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/drew-beamer-5Jnk_Gq2_XY-unsplash@0,1x.png',
-  'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/drew-beamer-P6b8YbIIC54-unsplash@0,1x.jpg',
-  'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/drew-beamer-bTN-zKFy9uA-unsplash@0,1x.png',
-  'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/hari-nandakumar-jnPX_eCrCOk-unsplash@0,1x.png',
-];
+import { ElfsightWidget } from 'react-elfsight-widget';
 
 export default function BarsInfoUI(props: BarInfoUIProps) {
-  const { selectedBar, onExpand, explore } = props;
+  const { selectedBar, onExpand, explore, preview } = props;
   const [_bars, setBars] = useState([]);
   useEffect(() => {
     fetch(
@@ -36,27 +29,34 @@ export default function BarsInfoUI(props: BarInfoUIProps) {
       <p className='uppercase px-2 font-medium py-2 border-b border-slate-700'>
         bars
       </p>
-      {bars.map(({ id, name, address, description, latitude, longitude }) => (
-        <BarSideItem
-          key={id}
-          name={name}
-          address={address}
-          description={description}
-          latitude={latitude}
-          longitude={longitude}
-          id={id}
-          selected={selectedBar}
-          onExpand={onExpand}>
-          <div className='px-4'>
-            {images.map((d) => (
-              <ImageContainer
-                key={d}
-                url={d}
-              />
-            ))}
-          </div>
-        </BarSideItem>
-      ))}
+      {bars.map(
+        ({
+          id,
+          name,
+          address,
+          description,
+          latitude,
+          longitude,
+          igWidgetId,
+        }) => (
+          <BarSideItem
+            key={id}
+            name={name}
+            address={address}
+            description={description}
+            latitude={latitude}
+            longitude={longitude}
+            id={id}
+            selected={preview?.bar ? preview.bar : selectedBar}
+            onExpand={onExpand}>
+            <ElfsightWidget
+              className='px-4 pb-4'
+              lazy
+              widgetId={igWidgetId}
+            />
+          </BarSideItem>
+        ),
+      )}
     </div>
   );
 }
