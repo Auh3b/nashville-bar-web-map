@@ -156,6 +156,10 @@ export default function useSidePanel() {
     setPreview(undefined);
   }
 
+  function ResetPreview() {
+    setPreview(undefined);
+  }
+
   return {
     preview,
     explore,
@@ -163,12 +167,13 @@ export default function useSidePanel() {
     mapRef,
     sidePanel,
     selectedBar,
+    getSelectedFeature,
     handleClick,
     handleEnter,
     handleExplore,
     handleMove,
     handleLeave,
     handleSelectBar,
-    getSelectedFeature,
+    ResetPreview,
   };
 }

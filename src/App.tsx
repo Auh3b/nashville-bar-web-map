@@ -37,13 +37,16 @@ function App() {
     handleEnter,
     handleLeave,
     handleMove,
+    ResetPreview,
   } = useSidePanel();
   return (
     <div className='flex items-center justify-center w-screen h-screen bg-gradient-to-br from-emerald-950 to-black md:p-4'>
       <div className='flex flex-col bg-teal-900 p-4 md:rounded-3xl text-white w-full h-full lg:w-2/3 shadow'>
         <Header explore={explore} />
         <div className='flex grow md:gap-4'>
-          <div className='grow'>
+          <div
+            className='grow'
+            onMouseLeave={ResetPreview}>
             <MapContainer
               mapProps={{
                 // @ts-ignore

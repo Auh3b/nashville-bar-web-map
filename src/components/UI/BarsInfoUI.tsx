@@ -2,6 +2,7 @@ import { BarInfoUIProps } from '../../utils/component.types';
 import BarSideItem from './BarSideItem';
 import { useEffect, useMemo, useState } from 'react';
 import { ElfsightWidget } from 'react-elfsight-widget';
+import { LuBeerOff } from 'react-icons/lu';
 
 export default function BarsInfoUI(props: BarInfoUIProps) {
   const { selectedBar, onExpand, explore, preview } = props;
@@ -29,6 +30,18 @@ export default function BarsInfoUI(props: BarInfoUIProps) {
       <p className='uppercase px-2 font-medium py-2 border-b border-slate-700'>
         bars
       </p>
+      {!bars.length && (
+        <div className='flex flex-col gap-2 items-center justify-center px-4 pt-4 '>
+          <LuBeerOff
+            className='text-slate-200'
+            size={32}
+          />
+          <span className='block text-sm text-center'>
+            <span className='text-lg font-medium'>Sorry!</span>
+            <br /> No bars available in {explore}.
+          </span>
+        </div>
+      )}
       {bars.map(
         ({
           id,
