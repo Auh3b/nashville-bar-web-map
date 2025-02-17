@@ -18,23 +18,6 @@ export default function NeigborhoodPolygonLayer(
       type={'geojson'}
       data={url}>
       <Layer
-        id={layerId + '_text'}
-        source={sourceId}
-        maxzoom={maxzoom}
-        layout={{
-          visibility: visibility,
-          'text-field': ['get', 'name'],
-          'text-transform': 'uppercase',
-        }}
-        paint={{
-          'text-color': 'white',
-          'text-halo-width': 1,
-          'text-halo-color': color,
-          'text-opacity': 0.5,
-        }}
-        type='symbol'
-      />
-      <Layer
         id={layerId}
         source={sourceId}
         maxzoom={maxzoom}
@@ -95,6 +78,23 @@ export default function NeigborhoodPolygonLayer(
           }}
         />
       )}
+      <Layer
+        id={layerId + '_text'}
+        source={sourceId}
+        maxzoom={maxzoom}
+        layout={{
+          visibility: visibility,
+          'text-field': ['get', 'name'],
+          'text-transform': 'uppercase',
+        }}
+        paint={{
+          'text-color': 'white',
+          'text-halo-width': 1,
+          'text-halo-color': color,
+          'text-opacity': 1,
+        }}
+        type='symbol'
+      />
     </Source>
   );
 }
