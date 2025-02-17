@@ -4,14 +4,14 @@ export interface SidePanelQueue {
 }
 
 export interface BarInfoUIProps {
-  preview: null | SidePanelQueue;
+  preview?: SidePanelQueue;
   explore?: string;
   selectedBar: number | null;
   onExpand: (value: any) => void;
 }
 
 export interface NeighborhoodInfoProps {
-  preview: SidePanelQueue | null;
+  preview?: SidePanelQueue;
   started?: boolean;
   id?: any;
   name?: string;

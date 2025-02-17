@@ -9,7 +9,7 @@ import { Feature } from 'geojson';
 export default function useSidePanel() {
   const mapRef = useRef<MapRef | null>(null);
   const [sidePanel, setsidePanel] = useState<SidePanelQueue>({});
-  const [preview, setPreview] = useState<SidePanelQueue | null>({});
+  const [preview, setPreview] = useState<SidePanelQueue | undefined>({});
   const [explore, setExplore] = useState('');
   const { getSelectedFeature, handleSelectedFeature, removeSelectedFeature } =
     useSelectedFeature();
@@ -144,7 +144,7 @@ export default function useSidePanel() {
     setPreview({ id, name });
   }
   function handleHoodLeave() {
-    setPreview(null);
+    setPreview(undefined);
   }
 
   function handleBarMove(feature: Feature) {
@@ -153,7 +153,7 @@ export default function useSidePanel() {
     setPreview({ bar: id });
   }
   function handleBarLeave() {
-    setPreview(null);
+    setPreview(undefined);
   }
 
   return {
