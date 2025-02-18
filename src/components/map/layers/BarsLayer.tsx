@@ -36,15 +36,39 @@ export default function BarsLayer(
     <Source
       id={sourceId}
       type={'geojson'}
-      data={url}>
+      data={url}
+      cluster={true}
+      clusterMaxZoom={17}
+      clusterRadius={50}>
       <Layer
         id={layerId + '_cluster'}
         type='circle'
         source={sourceId}
+        minzoom={minzoom}
         filter={['has', 'point_count']}
+        layout={{
+          visibility: visibility,
+        }}
         paint={{
           'circle-color': color,
-          'circle-radius': ['step', ['get', 'point_count'], 5, 5, 10, 10, 20],
+          'circle-radius': ['*', ['get', 'point_count'], 5],
+          'circle-opacity': 0.75,
+          'circle-stroke-width': 3,
+          'circle-stroke-color': color,
+        }}
+      />
+      <Layer
+        id={layerId + '_cluster_text'}
+        type='symbol'
+        source={sourceId}
+        minzoom={minzoom}
+        filter={['has', 'point_count']}
+        layout={{
+          visibility: visibility,
+          'text-field': ['get', 'point_count'],
+        }}
+        paint={{
+          'text-color': 'white',
         }}
       />
       <Layer

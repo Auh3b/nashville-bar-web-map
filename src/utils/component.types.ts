@@ -16,8 +16,8 @@ export interface NeighborhoodInfoProps {
   id?: any;
   name?: string;
   description?: string;
-  onExplore?: (id: any) => void;
   explore?: string;
+  onExplore?: (id: any) => void;
 }
 
 export type SidePanelProps = BarInfoUIProps & NeighborhoodInfoProps;

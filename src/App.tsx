@@ -65,10 +65,10 @@ function App() {
                 visibleLayers={legends}
                 onSelectedFeature={getSelectedFeature}
               />
-              <LegendUI
+              {/* <LegendUI
                 items={legends}
                 onToggle={handleLegendToggle}
-              />
+              /> */}
               <MapNav initialViewState={initialViewState} />
             </MapContainer>
           </div>

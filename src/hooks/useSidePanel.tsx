@@ -31,8 +31,7 @@ export default function useSidePanel() {
         mapRef.current.flyTo({
           // @ts-ignore
           center,
-          padding: 2,
-          zoom: 16,
+          zoom: 18,
         });
       }
     },
@@ -107,7 +106,7 @@ export default function useSidePanel() {
     setSelectedBar(id);
 
     if (mapRef) {
-      mapRef.flyTo({ center: [longitude, latitude], padding: 2, zoom: 16 });
+      mapRef.flyTo({ center: [longitude, latitude], padding: 2, zoom: 18 });
     }
   }
 

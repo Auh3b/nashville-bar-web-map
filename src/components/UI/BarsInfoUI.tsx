@@ -31,7 +31,7 @@ export default function BarsInfoUI(props: BarInfoUIProps) {
         bars
       </p>
       {!bars.length && (
-        <div className='flex flex-col gap-2 items-center justify-center px-4 pt-4 '>
+        <div className='flex flex-col items-center justify-center px-4 pt-4 h-48 '>
           <LuBeerOff
             className='text-slate-200'
             size={32}

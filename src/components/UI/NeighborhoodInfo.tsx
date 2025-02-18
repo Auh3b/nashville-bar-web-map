@@ -23,10 +23,10 @@ export default function NeighborhoodInfo(props: NeighborhoodInfoProps) {
             {preview?.description ? preview.description : description}
           </span>
           {!preview && id && (
-            <span className='px-4 text-sm'>
-              <span>To explore bars click</span>
+            <span className='px-4 text-xs'>
+              <span>To explore bars click here:</span>
               <button
-                className='hover:cursor-pointer ml-2 underline underline-offset-4 decoration-dotted '
+                className='hover:cursor-pointer ml-2 underline underline-offset-4 decoration-dotted'
                 onClick={handleExplore}>
                 Explore Bars
               </button>
