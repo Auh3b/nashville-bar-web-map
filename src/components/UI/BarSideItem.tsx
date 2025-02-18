@@ -1,39 +1,25 @@
 import { PropsWithChildren, useCallback } from 'react';
 import { FaAngleDown, FaAngleRight } from 'react-icons/fa6';
+import useMapStore from '../../data/mapStore';
+import { BarsItemProperty } from '../../utils/store.types';
+import { useMap } from 'react-map-gl/mapbox';
 
-interface BarSideItemProps {
-  id: any;
-  name: string;
-  address: string;
-  description: string;
-  selected: any;
-  latitude: number;
-  longitude: number;
-  onExpand: (value: any, center?: number[]) => void;
-}
+interface BarSideItemProps extends BarsItemProperty {}
 
 export default function BarSideItem(
   props: PropsWithChildren<BarSideItemProps>,
 ) {
-  const {
-    id,
-    name,
-    address,
-    description,
-    selected,
-    onExpand,
-    latitude,
-    longitude,
-  } = props;
-
-  const open = selected == id;
+  const { children, ...rest } = props;
+  const { bar, setBar } = useMapStore((state) => state);
+  const { name, address, description, latitude, longitude } = rest;
+  const open = rest.id === bar?.id;
+  const { map } = useMap();
   const handleClick = useCallback(() => {
-    if (open) {
-      onExpand(null);
-    } else {
-      onExpand(id, [longitude, latitude]);
-    }
-  }, [selected, open]);
+    if (open) return setBar(undefined);
+
+    setBar(rest);
+    if (map) map.flyTo({ center: [longitude, latitude], zoom: 18 });
+  }, [open, rest, map]);
 
   return (
     <div className={`flex flex-col ${open && 'border-b border-b-slate-700 '}`}>
@@ -50,7 +36,7 @@ export default function BarSideItem(
         <div className='mb-4 px-4 pt-4 text-sm'>📌{address}</div>
         <div className='px-4 mb-4 text-xs'>{description}</div>
 
-        {props.children}
+        {children}
       </div>
     </div>
   );

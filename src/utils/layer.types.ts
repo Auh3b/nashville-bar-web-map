@@ -1,7 +1,4 @@
-export interface BaseLayerCopmponentProps {
-  selectedFeature?: SelectedFeature;
-  visibleLayers?: string[];
-}
+export interface BaseLayerCopmponentProps {}
 
 export interface SelectedFeature {
   property: string;

@@ -1,12 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import NeighborhoodInfo from './NeighborhoodInfo';
 import BarsInfoUI from './BarsInfoUI';
-import { SidePanelProps } from '../../utils/component.types';
 import { FaAnglesDown, FaAnglesUp } from 'react-icons/fa6';
 import SidePanelItem from './SidePanelItem';
+import useMapStore from '../../data/mapStore';
 
-export default function MobileDrawer(props: SidePanelProps) {
-  const { explore, onExpand, selectedBar, onExplore, ...sidePanel } = props;
+export default function MobileDrawer() {
   const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -26,14 +25,7 @@ export default function MobileDrawer(props: SidePanelProps) {
       handleSizeChange(containerRef.current);
     }
   }, [containerRef.current]);
-
-  const handleExplore = useCallback(
-    (name: string) => {
-      setOpen(false);
-      if (onExplore) onExplore(name);
-    },
-    [onExplore],
-  );
+  const hood = useMapStore((state) => state.hood);
 
   return (
     <div
@@ -51,25 +43,17 @@ export default function MobileDrawer(props: SidePanelProps) {
       <div
         id='mobile-drawer'
         className=' '>
-        {explore ? (
+        {hood ? (
           <SidePanelItem
             id='bars'
             {...size}>
-            <BarsInfoUI
-              explore={explore}
-              selectedBar={selectedBar}
-              onExpand={onExpand}
-            />
+            <BarsInfoUI />
           </SidePanelItem>
         ) : (
           <SidePanelItem
             id='neighborhood'
             {...size}>
-            <NeighborhoodInfo
-              {...sidePanel}
-              explore={explore}
-              onExplore={handleExplore}
-            />
+            <NeighborhoodInfo />
           </SidePanelItem>
         )}
       </div>

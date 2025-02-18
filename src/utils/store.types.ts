@@ -1,3 +1,10 @@
+import {
+  FeatureCollection,
+  MultiPoint,
+  MultiPolygon,
+  Point,
+  Polygon,
+} from 'geojson';
 interface PreviewItem {
   [l: string]: any;
 }
@@ -7,19 +14,32 @@ export interface Preview {
   bar?: PreviewItem;
 }
 
-export interface LocationItem {
-  id?: string;
-  name?: string;
-  description?: string;
+export type HoodItem = HoodsItemProperty;
+
+export type BarItem = BarsItemProperty;
+
+export interface BarsItemProperty {
+  id: string;
+  name: string;
+  address: string;
+  description: string;
+  igWidgetId: string;
+  zipcode: number;
+  latitude: number;
+  longitude: number;
+  hoodname: string;
 }
 
-export interface HoodItem extends LocationItem {
-  preview?: Preview;
-  selectedHood?: string;
+export type Bars = FeatureCollection<MultiPolygon | Polygon, BarsItemProperty>;
+
+export interface HoodsItemProperty {
+  id: string;
+  name: string;
 }
 
-export interface BarItem extends LocationItem {
-  preview?: Preview;
-  bar?: string;
-  hood?: string;
+export type Hoods = FeatureCollection<Point | MultiPoint, HoodsItemProperty>;
+
+export interface DataSets {
+  bars: Bars;
+  hoods: Hoods;
 }

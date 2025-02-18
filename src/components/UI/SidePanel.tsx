@@ -1,20 +1,10 @@
 import { useRef } from 'react';
-import { SidePanelProps } from '../../utils/component.types';
 import BarsInfoUI from './BarsInfoUI';
 import NeighborhoodInfo from './NeighborhoodInfo';
 import SidePanelItem from './SidePanelItem';
 import useResize from '../../hooks/useResize';
 
-export default function SidePanel(props: SidePanelProps) {
-  const {
-    started,
-    explore,
-    onExpand,
-    selectedBar,
-    onExplore,
-    preview,
-    ...sidePanel
-  } = props;
+export default function SidePanel() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { size } = useResize(containerRef);
   return (
@@ -24,22 +14,12 @@ export default function SidePanel(props: SidePanelProps) {
       <SidePanelItem
         id='neighborhood'
         {...size}>
-        <NeighborhoodInfo
-          {...sidePanel}
-          preview={preview}
-          explore={explore}
-          onExplore={onExplore}
-        />
+        <NeighborhoodInfo />
       </SidePanelItem>
       <SidePanelItem
         id='bars'
         {...size}>
-        <BarsInfoUI
-          preview={preview}
-          explore={explore}
-          selectedBar={selectedBar}
-          onExpand={onExpand}
-        />
+        <BarsInfoUI />
       </SidePanelItem>
     </div>
   );

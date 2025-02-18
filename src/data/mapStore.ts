@@ -1,23 +1,35 @@
-import { createStore } from 'zustand';
-import { BarItem, HoodItem, Preview } from '../utils/store.types';
+import { create } from 'zustand';
+import {
+  BarItem,
+  Bars,
+  DataSets,
+  HoodItem,
+  Hoods,
+  Preview,
+} from '../utils/store.types';
 
 interface MapStoreProps {
-  hood: HoodItem;
-  preview: Preview;
-  bar: BarItem;
+  cursor: string;
+  hood?: HoodItem;
+  preview?: Preview;
+  bar?: BarItem;
+  data?: DataSets;
 }
 
 interface MapStoreActions {
-  setPreview: (id: string, value: { [k: string]: any }) => void;
-  setBar: (id: keyof BarItem, value: Partial<BarItem>) => void;
-  setHood: (id: keyof HoodItem, value: Partial<HoodItem>) => void;
+  setPreview: (
+    id: keyof Preview,
+    value: { [k: string]: any } | undefined,
+  ) => void;
+  setBar: (value: BarItem | undefined) => void;
+  setHood: (value: HoodItem | undefined) => void;
+  setDataset: (id: keyof DataSets, value: Bars | Hoods) => void;
+  setCursor: (cursor: string) => void;
 }
 
-const useMapStore = createStore<MapStoreProps & MapStoreActions>((set) => ({
-  hood: {},
-  bar: {},
-  preview: {},
-
+const useMapStore = create<MapStoreProps & MapStoreActions>((set) => ({
+  cursor: '',
+  setCursor: (cursor) => set({ cursor }),
   setPreview: (id, value) =>
     set((state) => ({
       preview: {
@@ -26,18 +38,20 @@ const useMapStore = createStore<MapStoreProps & MapStoreActions>((set) => ({
       },
     })),
 
-  setHood: (id, value) =>
-    set((state) => ({
-      hood: {
-        ...state.hood,
-        [id]: value,
-      },
-    })),
+  setHood: (value) =>
+    set({
+      hood: value,
+    }),
 
-  setBar: (id, value) =>
+  setBar: (value) =>
+    set({
+      bar: value,
+    }),
+
+  setDataset: (id, value) =>
     set((state) => ({
-      bar: {
-        ...state.bar,
+      data: {
+        ...state.data,
         [id]: value,
       },
     })),
