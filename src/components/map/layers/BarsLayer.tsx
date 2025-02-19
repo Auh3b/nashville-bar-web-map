@@ -49,7 +49,7 @@ export default function BarsLayer() {
             filter={['has', 'point_count']}
             paint={{
               'circle-color': color,
-              'circle-radius': ['*', ['get', 'point_count'], 5],
+              'circle-radius': ['*', ['get', 'point_count'], 10],
               'circle-opacity': 0.75,
               'circle-stroke-width': 3,
               'circle-stroke-color': color,
@@ -63,6 +63,7 @@ export default function BarsLayer() {
             filter={['has', 'point_count']}
             layout={{
               'text-field': ['get', 'point_count'],
+              'text-size': 24,
             }}
             paint={{
               'text-color': 'white',
@@ -114,6 +115,7 @@ export default function BarsLayer() {
               'icon-image': iconName,
               'icon-size': 0.1,
             }}
+            filter={['!', ['has', 'point_count']]}
             minzoom={minzoom}
             type='symbol'
             paint={{
