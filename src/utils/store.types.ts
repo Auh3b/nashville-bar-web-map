@@ -14,7 +14,9 @@ export interface Preview {
   bar?: PreviewItem;
 }
 
-export type HoodItem = HoodsItemProperty;
+export interface HoodItem extends HoodsItemProperty {
+  bounds: number[][];
+}
 
 export type BarItem = BarsItemProperty;
 

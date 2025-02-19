@@ -11,7 +11,9 @@ export default function useMapHandlers() {
   const { setPreview, setHood, setBar, setCursor } = useMapStore(
     (state) => state,
   );
+
   const { map } = useMap();
+
   const handleClick = useCallback(
     (e: MapMouseEvent) => {
       if (!e.features?.length) return;
@@ -31,12 +33,12 @@ export default function useMapHandlers() {
   ) {
     const id = feature.properties?.['id'];
     const name = feature.properties?.['name'];
-    setHood({ id, name });
+    const bounds = getBounds(feature);
+    setHood({ id, name, bounds });
 
     scrollToId('neighborhood');
 
     if (mapRef) {
-      const bounds = getBounds(feature);
       // @ts-ignore
       mapRef.fitBounds(bounds, { padding: 20, maxZoom: 12.9 });
     }
@@ -63,23 +65,12 @@ export default function useMapHandlers() {
     return handleBarMove(feature as Feature<Point, BarItem>);
   };
 
-  const handleLeave = (e: MapMouseEvent) => {
-    if (!e.features?.length) return;
-    const layerId = e.features[0].layer?.id || '';
-    if (layerId === 'neighbourhood-layer') return handleHoodLeave();
-    return handleBarLeave();
-  };
-
   function handleHoodMove(feature: Feature<Polygon, HoodItem>) {
     setCursor('pointer');
     const id = feature.properties?.['id'];
     const name = feature.properties?.['name'];
     scrollToId('neighborhood');
     setPreview('hood', { id, name });
-  }
-  function handleHoodLeave() {
-    setCursor('');
-    setPreview('hood', undefined);
   }
 
   function handleBarMove(feature: Feature<Point, BarItem>) {
@@ -88,6 +79,19 @@ export default function useMapHandlers() {
     const { latitude, longitude, id } = feature?.properties;
     setPreview('bar', { bar: id });
   }
+
+  const handleLeave = (e: MapMouseEvent) => {
+    if (!e.features?.length) return;
+    const layerId = e.features[0].layer?.id || '';
+    if (layerId === 'neighbourhood-layer') return handleHoodLeave();
+    return handleBarLeave();
+  };
+
+  function handleHoodLeave() {
+    setCursor('');
+    setPreview('hood', undefined);
+  }
+
   function handleBarLeave() {
     setCursor('');
     setPreview('bar', undefined);

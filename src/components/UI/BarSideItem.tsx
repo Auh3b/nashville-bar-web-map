@@ -10,16 +10,22 @@ export default function BarSideItem(
   props: PropsWithChildren<BarSideItemProps>,
 ) {
   const { children, ...rest } = props;
-  const { bar, setBar } = useMapStore((state) => state);
+  const { hood, bar, setBar } = useMapStore((state) => state);
   const { name, address, description, latitude, longitude } = rest;
   const open = rest.id === bar?.id;
   const { map } = useMap();
   const handleClick = useCallback(() => {
-    if (open) return setBar(undefined);
+    if (open) {
+      setBar(undefined);
+      if (map && hood)
+        // @ts-ignore
+        map.fitBounds(hood.bounds, { minZoom: 14, linear: true });
+      return;
+    }
 
     setBar(rest);
     if (map) map.flyTo({ center: [longitude, latitude], zoom: 18 });
-  }, [open, rest, map]);
+  }, [open, rest, map, hood]);
 
   return (
     <div className={`flex flex-col ${open && 'border-b border-b-slate-700 '}`}>

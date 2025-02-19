@@ -8,9 +8,10 @@ import {
   Preview,
 } from '../utils/store.types';
 
-interface MapStoreProps {
+interface MapStoreState {
   cursor: string;
   hood?: HoodItem;
+  isDataLoaded?: boolean;
   preview?: Preview;
   bar?: BarItem;
   data?: DataSets;
@@ -24,11 +25,21 @@ interface MapStoreActions {
   setBar: (value: BarItem | undefined) => void;
   setHood: (value: HoodItem | undefined) => void;
   setDataset: (id: keyof DataSets, value: Bars | Hoods) => void;
+  setDataLoaded: () => void;
   setCursor: (cursor: string) => void;
+
+  reset: () => void;
 }
 
-const useMapStore = create<MapStoreProps & MapStoreActions>((set) => ({
+const initialState: MapStoreState = {
   cursor: '',
+  preview: undefined,
+  hood: undefined,
+  bar: undefined,
+};
+
+const useMapStore = create<MapStoreState & MapStoreActions>((set) => ({
+  ...initialState,
   setCursor: (cursor) => set({ cursor }),
   setPreview: (id, value) =>
     set((state) => ({
@@ -48,13 +59,17 @@ const useMapStore = create<MapStoreProps & MapStoreActions>((set) => ({
       bar: value,
     }),
 
+  setDataLoaded: () => set({ isDataLoaded: true }),
+
   setDataset: (id, value) =>
+    // @ts-ignore
     set((state) => ({
       data: {
         ...state.data,
         [id]: value,
       },
     })),
+  reset: () => set((state) => ({ ...state, ...initialState })),
 }));
 
 export default useMapStore;

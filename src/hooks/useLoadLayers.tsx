@@ -14,14 +14,15 @@ const datasets: [keyof DataSets, string][] = [
 ];
 
 export default function useLoadLayers() {
-  const setDataset = useMapStore((state) => state.setDataset);
+  const { setDataset, setDataLoaded } = useMapStore((state) => state);
 
   useEffect(() => {
     Promise.all(datasets.map(([_id, url]) => fetch(url)))
       .then((res) => Promise.all(res.map((r) => r.json())))
-      .then((data) =>
-        data.forEach((d: Bars | Hoods, i) => setDataset(datasets[i][0], d)),
-      );
+      .then((data) => {
+        data.forEach((d: Bars | Hoods, i) => setDataset(datasets[i][0], d));
+        setDataLoaded();
+      });
   }, []);
   return;
 }
