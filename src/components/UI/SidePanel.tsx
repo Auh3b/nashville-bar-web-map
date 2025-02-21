@@ -10,7 +10,7 @@ export default function SidePanel() {
   return (
     <div
       ref={containerRef}
-      className={` py-2 rounded-2xl bg-gray-900 hidden  md:flex overflow-x-auto overflow-y-hidden scrollbar-none snap-x scroll-smooth max-h-145 w-1/3 lg:max-h-145 transition-all duration-300`}>
+      className={` py-2 rounded-2xl bg-gray-900 hidden  md:flex overflow-x-auto overflow-y-hidden scrollbar-none snap-x scroll-smooth  w-1/3  transition-all duration-300`}>
       <SidePanelItem
         id='neighborhood'
         {...size}>
