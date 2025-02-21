@@ -1,5 +1,5 @@
 import './App.css';
-import MapContainer from './components/map/MapContainer';
+// import MapContainer from './components/map/MapContainer';
 import { MapProvider, ViewState } from 'react-map-gl/mapbox';
 import useLegends from './hooks/useLegends';
 import MapLayersContainer from './components/map/layers';
@@ -10,6 +10,9 @@ import Header from './components/UI/Header';
 import MapNav from './components/map/MapNav';
 import useLoadLayers from './hooks/useLoadLayers';
 
+import LoadingMap from './components/common/loading/LoadingMap';
+import { lazy, Suspense } from 'react';
+
 const initialViewState: ViewState = {
   longitude: -86.78,
   latitude: 36.18,
@@ -18,6 +21,8 @@ const initialViewState: ViewState = {
   pitch: 0,
   padding: { top: 20, bottom: 20, left: 20, right: 20 },
 };
+
+const MapContainer = lazy(() => import('./components/map/MapContainer'));
 
 function App() {
   useLoadLayers();
@@ -32,15 +37,17 @@ function App() {
             <div
               className='grow'
               onMouseLeave={ResetPreview}>
-              <MapContainer
-                mapProps={{
-                  interactiveLayerIds: legends,
-                }}
-                CSSStyle={{ flexGrow: 1, borderRadius: '16px' }}
-                initialViewState={initialViewState}>
-                <MapLayersContainer />
-                <MapNav initialViewState={initialViewState} />
-              </MapContainer>
+              <Suspense fallback={<LoadingMap />}>
+                <MapContainer
+                  mapProps={{
+                    interactiveLayerIds: legends,
+                  }}
+                  CSSStyle={{ flexGrow: 1, borderRadius: '16px' }}
+                  initialViewState={initialViewState}>
+                  <MapLayersContainer />
+                  <MapNav initialViewState={initialViewState} />
+                </MapContainer>
+              </Suspense>
             </div>
             <SidePanel />
           </div>

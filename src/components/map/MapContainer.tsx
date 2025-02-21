@@ -1,7 +1,6 @@
 import { CSSProperties, PropsWithChildren } from 'react';
-import Map, { MapProps, ViewState } from 'react-map-gl/mapbox';
+import { Map, MapProps, ViewState } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
-// import ViewStateView from '../common/ViewStateView';
 import useMapHandlers from '../../hooks/useMapHandlers';
 import useMapStore from '../../data/mapStore';
 
@@ -13,7 +12,6 @@ interface MapContainerProps {
 }
 
 const accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
-
 export default function MapContainer(
   props: PropsWithChildren<MapContainerProps>,
 ) {
