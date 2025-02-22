@@ -30,7 +30,7 @@ function App() {
   const { ResetPreview } = useSidePanel();
   const { ref, size } = useResize();
   useEffect(() => {
-    if (size.width > 768) {
+    if (size.width > 485) {
       setIsMobile(false);
     } else {
       setIsMobile(true);

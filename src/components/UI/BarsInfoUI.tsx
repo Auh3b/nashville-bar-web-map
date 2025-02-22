@@ -14,14 +14,14 @@ export default function BarsInfoUI() {
     setExplore(false);
   };
   return (
-    <div className={`transition-all duration-500 w-full py-2`}>
+    <div className={`transition-all duration-500 w-full md:py-2`}>
       {isDataLoaded && (
         <>
-          <div className='flex items-center justify-between uppercase px-2 font-medium py-2 border-b border-slate-700'>
+          <div className='flex items-center justify-between uppercase pl-3 pr-2 font-medium md:py-2 border-b border-slate-700'>
             <span>bars</span>
             {isMobile && (
               <button
-                className='py-3 pr-3 hover:cursor-pointer'
+                className=' hover:cursor-pointer'
                 onClick={handleClose}>
                 <IoCloseOutline size={24} />
               </button>
