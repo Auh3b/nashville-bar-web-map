@@ -1,62 +1,35 @@
-import { useEffect, useRef, useState } from 'react';
-import NeighborhoodInfo from './NeighborhoodInfo';
+import { Fragment } from 'react';
 import BarsInfoUI from './BarsInfoUI';
-import { FaAnglesDown, FaAnglesUp } from 'react-icons/fa6';
-import SidePanelItem from './SidePanelItem';
 import useMapStore from '../../data/mapStore';
+import { useTransition, animated } from '@react-spring/web';
+import useResize from '../../hooks/useResize';
 
 export default function MobileDrawer() {
-  const [open, setOpen] = useState(false);
-  const containerRef = useRef(null);
-  const [size, setSize] = useState({ width: 0, height: 0 });
+  const { ref, size } = useResize();
+  const { explore } = useMapStore((state) => state);
 
-  const handleToggle = () => {
-    setOpen((prev) => !prev);
-  };
-
-  const handleSizeChange = (e: HTMLDivElement) => {
-    const height = e.clientHeight;
-    const width = e.clientWidth;
-    setSize({ width, height });
-  };
-
-  useEffect(() => {
-    if (containerRef.current) {
-      handleSizeChange(containerRef.current);
-    }
-  }, [containerRef.current]);
-  const hood = useMapStore((state) => state.hood);
-
+  const transition = useTransition(explore, {
+    from: { opacity: 0, transform: `translateY(${500}px)` },
+    enter: { opacity: 1, transform: `translateY(0px)` },
+    leave: { opacity: 0, transform: `translateY(${size.height}px)` },
+    exitBeforeEnter: true,
+  });
   return (
-    <div
-      ref={containerRef}
-      className={`md:hidden bg-slate-950 text-white fixed transition-all duration-300 rounded-t-2xl z-50 w-screen  ${
-        open ? '-bottom-5 h-full' : 'bottom-0 h-12'
-      }`}>
-      <div className='flex justify-end'>
-        <button
-          className='py-3 pr-3'
-          onClick={handleToggle}>
-          {open ? <FaAnglesDown /> : <FaAnglesUp />}
-        </button>
-      </div>
-      <div
-        id='mobile-drawer'
-        className=' '>
-        {hood ? (
-          <SidePanelItem
-            id='bars'
-            {...size}>
-            <BarsInfoUI />
-          </SidePanelItem>
+    <Fragment>
+      {transition((springs, i) => {
+        return i ? (
+          <animated.div
+            ref={ref}
+            className={`md:hidden p-4 text-white fixed z-50 w-full h-full`}
+            style={springs}>
+            <div className='card-container w-full h-full bg-slate-900'>
+              <BarsInfoUI />
+            </div>
+          </animated.div>
         ) : (
-          <SidePanelItem
-            id='neighborhood'
-            {...size}>
-            <NeighborhoodInfo />
-          </SidePanelItem>
-        )}
-      </div>
-    </div>
+          <></>
+        );
+      })}
+    </Fragment>
   );
 }

@@ -1,15 +1,16 @@
 import { useCallback } from 'react';
 import useMapStore from '../../data/mapStore';
-import { scrollToId } from '../../utils/domfuncs';
 import { useMap } from 'react-map-gl/mapbox';
 const description =
   'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure vitae, animi neque illum nesciunt amet excepturi ab optio rerum alias.';
 export default function NeighborhoodInfo() {
-  const { preview, hood, isDataLoaded } = useMapStore((state) => state);
+  const { preview, hood, isDataLoaded, setExplore } = useMapStore(
+    (state) => state,
+  );
   const { map } = useMap();
   const handleExplore = useCallback(() => {
     if (!hood) return;
-    scrollToId('bars');
+    setExplore(true);
     if (map) map.zoomTo(13.1);
   }, [hood]);
 
