@@ -24,7 +24,7 @@ export default function MobileHoodView() {
           longitude={hoodCenter[0]}
           closeOnClick={false}
           closeButton={false}>
-          <div className='flex flex-col'>
+          <div className='flex flex-col gap-2'>
             <span className='text-lg font-bold'>{hood?.name}</span>
             <span className='text-xs'>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Non odit
@@ -32,7 +32,7 @@ export default function MobileHoodView() {
               itaque sed.
             </span>
             <button
-              className='self-start text-amber-300 py-4 pr-2 flex items-center gap-2 hover:cursor-pointer'
+              className='self-start text-amber-300 py-2 pr-2 flex items-center gap-2 hover:cursor-pointer'
               onClick={handleClick}>
               See Bars <FaAngleRight />
             </button>

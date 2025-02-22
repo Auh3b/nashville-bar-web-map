@@ -9,6 +9,10 @@ import MobileDrawer from './components/UI/MobileDrawer';
 import Header from './components/UI/Header';
 import MapNav from './components/map/MapNav';
 import useLoadLayers from './hooks/useLoadLayers';
+import useMapStore from './data/mapStore';
+import useResize from './hooks/useResize';
+import { useEffect } from 'react';
+import MobileHoodView from './components/UI/MobileHoodView';
 
 const initialViewState: ViewState = {
   longitude: -86.78,
@@ -49,6 +53,7 @@ function App() {
                 }}
                 CSSStyle={{ flexGrow: 1, borderRadius: '16px' }}
                 initialViewState={initialViewState}>
+                <MobileHoodView />
                 <MapLayersContainer />
                 <MapNav initialViewState={initialViewState} />
               </MapContainer>
