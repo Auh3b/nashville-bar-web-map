@@ -11,7 +11,10 @@ import MapNav from './components/map/MapNav';
 import useLoadLayers from './hooks/useLoadLayers';
 
 import LoadingMap from './components/common/loading/LoadingMap';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
+import MobileHoodView from './components/UI/MobileHoodView';
+import useResize from './hooks/useResize';
+import useMapStore from './data/mapStore';
 
 const initialViewState: ViewState = {
   longitude: -86.78,
@@ -26,10 +29,21 @@ const MapContainer = lazy(() => import('./components/map/MapContainer'));
 
 function App() {
   useLoadLayers();
+  const setIsMobile = useMapStore((state) => state.setIsMobile);
   const { legends } = useLegends();
   const { ResetPreview } = useSidePanel();
+  const { ref, size } = useResize();
+  useEffect(() => {
+    if (size.width > 768) {
+      setIsMobile(false);
+    } else {
+      setIsMobile(true);
+    }
+  }, [size.width]);
   return (
-    <div className='flex items-center justify-center w-screen h-screen bg-gradient-to-br from-emerald-950 to-black md:p-4'>
+    <div
+      ref={ref}
+      className='flex items-center justify-center w-screen h-screen  md:p-4'>
       <MapProvider>
         <div className='flex flex-col bg-teal-900 p-4 md:rounded-3xl text-white w-full h-full lg:w-2/3 shadow'>
           <Header />
@@ -44,6 +58,7 @@ function App() {
                   }}
                   CSSStyle={{ flexGrow: 1, borderRadius: '16px' }}
                   initialViewState={initialViewState}>
+                  <MobileHoodView />
                   <MapLayersContainer />
                   <MapNav initialViewState={initialViewState} />
                 </MapContainer>

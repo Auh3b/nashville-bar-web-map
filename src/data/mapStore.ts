@@ -11,9 +11,12 @@ import {
 interface MapStoreState {
   cursor: string;
   hood?: HoodItem;
+  hoodCenter?: number[];
+  explore: boolean;
   isDataLoaded?: boolean;
   preview?: Preview;
   bar?: BarItem;
+  isMobile: boolean;
   data?: DataSets;
 }
 
@@ -27,8 +30,10 @@ interface MapStoreActions {
   setDataset: (id: keyof DataSets, value: Bars | Hoods) => void;
   setDataLoaded: () => void;
   setCursor: (cursor: string) => void;
-
+  setExplore: (value: boolean) => void;
   reset: () => void;
+  setIsMobile: (value: boolean) => void;
+  setHoodCenter: (value: number[] | undefined) => void;
 }
 
 const initialState: MapStoreState = {
@@ -36,6 +41,8 @@ const initialState: MapStoreState = {
   preview: undefined,
   hood: undefined,
   bar: undefined,
+  isMobile: false,
+  explore: false,
 };
 
 const useMapStore = create<MapStoreState & MapStoreActions>((set) => ({
@@ -70,6 +77,9 @@ const useMapStore = create<MapStoreState & MapStoreActions>((set) => ({
       },
     })),
   reset: () => set((state) => ({ ...state, ...initialState })),
+  setExplore: (explore) => set({ explore }),
+  setIsMobile: (isMobile) => set({ isMobile }),
+  setHoodCenter: (hoodCenter) => set({ hoodCenter }),
 }));
 
 export default useMapStore;

@@ -3,19 +3,31 @@ import { ElfsightWidget } from 'react-elfsight-widget';
 import { LuBeerOff } from 'react-icons/lu';
 import useDataMap from '../../hooks/useDataMap';
 import useMapStore from '../../data/mapStore';
+import { IoCloseOutline } from 'react-icons/io5';
 
 export default function BarsInfoUI() {
   const bars = useDataMap('bars');
-  const { hood, isDataLoaded } = useMapStore((state) => state);
-
+  const { hood, isDataLoaded, setExplore, isMobile } = useMapStore(
+    (state) => state,
+  );
+  const handleClose = () => {
+    setExplore(false);
+  };
   return (
     <div className={`transition-all duration-500 w-full py-2`}>
       {isDataLoaded && (
         <>
-          <p className='uppercase px-2 font-medium py-2 border-b border-slate-700'>
-            bars
-          </p>
-          {!bars && (
+          <div className='flex items-center justify-between uppercase px-2 font-medium py-2 border-b border-slate-700'>
+            <span>bars</span>
+            {isMobile && (
+              <button
+                className='py-3 pr-3 hover:cursor-pointer'
+                onClick={handleClose}>
+                <IoCloseOutline size={24} />
+              </button>
+            )}
+          </div>
+          {!bars?.length && (
             <div className='flex flex-col items-center justify-center px-4 pt-4 h-48 '>
               <LuBeerOff
                 className='text-slate-200'

@@ -1,6 +1,5 @@
 import { Feature, Point, Polygon } from 'geojson';
 import { useCallback } from 'react';
-import { scrollToId } from '../utils/domfuncs';
 import { MapMouseEvent, useMap } from 'react-map-gl/mapbox';
 import { BarItem, HoodItem } from '../utils/store.types';
 import { MapRef } from 'react-map-gl/mapbox';
@@ -8,53 +7,68 @@ import { getBounds } from '../utils/geoFuncs';
 import useMapStore from '../data/mapStore';
 
 export default function useMapHandlers() {
-  const { setPreview, setHood, setBar, setCursor } = useMapStore(
-    (state) => state,
-  );
+  const {
+    setPreview,
+    setHood,
+    setBar,
+    setCursor,
+    setExplore,
+    setHoodCenter,
+    isMobile,
+  } = useMapStore((state) => state);
 
   const { map } = useMap();
+
+  const handleHoodClick = useCallback(
+    (
+      feature: Feature<Polygon, HoodItem>,
+      mapRef: MapRef | undefined,
+      point: number[],
+    ) => {
+      const id = feature.properties?.['id'];
+      const name = feature.properties?.['name'];
+      const bounds = getBounds(feature);
+      setHood({ id, name, bounds });
+
+      setExplore(false);
+      if (isMobile) setHoodCenter(point);
+
+      if (mapRef) {
+        // @ts-ignore
+        mapRef.fitBounds(bounds, { padding: 20, maxZoom: 12.9 });
+      }
+    },
+    [isMobile],
+  );
+  const handleBarClick = useCallback(
+    (feature: Feature<Point, BarItem>, mapRef: MapRef | undefined) => {
+      setBar({ ...feature?.properties });
+      const { latitude, longitude } = feature.properties;
+
+      if (mapRef) {
+        mapRef.flyTo({ center: [longitude, latitude], padding: 2, zoom: 18 });
+      }
+      if (isMobile) setExplore(true);
+    },
+    [isMobile],
+  );
 
   const handleClick = useCallback(
     (e: MapMouseEvent) => {
       if (!e.features?.length) return;
       const feature = e.features[0] as unknown;
       const layerId = e.features[0].layer?.id || '';
+      const { lat, lng } = e.lngLat;
       if (layerId === 'neighbourhood-layer') {
-        return handleHoodClick(feature as Feature<Polygon, HoodItem>, map);
+        return handleHoodClick(feature as Feature<Polygon, HoodItem>, map, [
+          lng,
+          lat,
+        ]);
       }
       return handleBarClick(feature as Feature<Point, BarItem>, map);
     },
-    [map],
+    [map, isMobile],
   );
-
-  function handleHoodClick(
-    feature: Feature<Polygon, HoodItem>,
-    mapRef: MapRef | undefined,
-  ) {
-    const id = feature.properties?.['id'];
-    const name = feature.properties?.['name'];
-    const bounds = getBounds(feature);
-    setHood({ id, name, bounds });
-
-    scrollToId('neighborhood');
-
-    if (mapRef) {
-      // @ts-ignore
-      mapRef.fitBounds(bounds, { padding: 20, maxZoom: 12.9 });
-    }
-  }
-
-  function handleBarClick(
-    feature: Feature<Point, BarItem>,
-    mapRef: MapRef | undefined,
-  ) {
-    setBar({ ...feature?.properties });
-    const { latitude, longitude } = feature.properties;
-
-    if (mapRef) {
-      mapRef.flyTo({ center: [longitude, latitude], padding: 2, zoom: 18 });
-    }
-  }
 
   const handleMove = (e: MapMouseEvent) => {
     if (!e.features?.length) return;
@@ -69,7 +83,7 @@ export default function useMapHandlers() {
     setCursor('pointer');
     const id = feature.properties?.['id'];
     const name = feature.properties?.['name'];
-    scrollToId('neighborhood');
+    setExplore(false);
     setPreview('hood', { id, name });
   }
 

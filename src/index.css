@@ -25,3 +25,11 @@
 .button {
   @apply hover:cursor-pointer;
 }
+
+.mapboxgl-popup-content {
+  background-color: var(--color-slate-900) !important;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: var(--color-slate-900) !important;
+}
