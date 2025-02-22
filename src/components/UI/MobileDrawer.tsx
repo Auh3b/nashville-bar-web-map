@@ -20,7 +20,7 @@ export default function MobileDrawer() {
         return i ? (
           <animated.div
             ref={ref}
-            className={`md:hidden p-4 text-white fixed z-50 w-full h-full`}
+            className={`md:hidden p-4 text-white absolute z-50 w-full h-full`}
             style={springs}>
             <div className='card-container w-full h-full container-dark'>
               <BarsInfoUI />

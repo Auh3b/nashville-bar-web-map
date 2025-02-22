@@ -39,7 +39,7 @@ function App() {
   return (
     <div
       ref={ref}
-      className='flex items-center justify-center w-screen h-screen  md:p-4'>
+      className='relative flex items-center justify-center w-full h-full  md:p-4'>
       <MapProvider>
         <div className='flex flex-col bg-teal-900 p-4 md:rounded-3xl text-white w-full h-full shadow'>
           <Header />
