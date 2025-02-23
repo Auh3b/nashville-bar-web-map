@@ -15,7 +15,6 @@ export default function MobileHoodView() {
     }
   }, [mapRef.current]);
   const open = !explore && hoodCenter && isMobile && hood;
-  console.log(open, hoodCenter);
   return (
     <Fragment>
       {open && (

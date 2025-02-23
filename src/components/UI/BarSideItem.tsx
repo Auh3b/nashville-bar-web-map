@@ -10,9 +10,9 @@ export default function BarSideItem(
   props: PropsWithChildren<BarSideItemProps>,
 ) {
   const { children, ...rest } = props;
-  const { hood, bar, setBar } = useMapStore((state) => state);
+  const { hood, bar, preview, setBar } = useMapStore((state) => state);
   const { name, address, description, latitude, longitude } = rest;
-  const open = rest.id === bar?.id;
+  const open = preview?.bar ? preview.bar.id === rest.id : rest.id === bar?.id;
   const { map } = useMap();
   const handleClick = useCallback(() => {
     if (open) {

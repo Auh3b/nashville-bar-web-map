@@ -1,7 +1,6 @@
 import './App.css';
 import MapContainer from './components/map/MapContainer';
 import { MapProvider, ViewState } from 'react-map-gl/mapbox';
-import useLegends from './hooks/useLegends';
 import MapLayersContainer from './components/map/layers';
 import useSidePanel from './hooks/useSidePanel';
 import SidePanel from './components/UI/SidePanel';
@@ -13,6 +12,7 @@ import useMapStore from './data/mapStore';
 import useResize from './hooks/useResize';
 import { useEffect } from 'react';
 import MobileHoodView from './components/UI/MobileHoodView';
+import layers from './data/layers';
 
 const initialViewState: ViewState = {
   longitude: -86.78,
@@ -23,10 +23,11 @@ const initialViewState: ViewState = {
   padding: { top: 20, bottom: 20, left: 20, right: 20 },
 };
 
+const interactiveLayerIds = Object.values(layers);
+
 function App() {
   useLoadLayers();
   const setIsMobile = useMapStore((state) => state.setIsMobile);
-  const { legends } = useLegends();
   const { ResetPreview } = useSidePanel();
   const { ref, size } = useResize();
   useEffect(() => {
@@ -49,7 +50,7 @@ function App() {
               onMouseLeave={ResetPreview}>
               <MapContainer
                 mapProps={{
-                  interactiveLayerIds: legends,
+                  interactiveLayerIds,
                 }}
                 CSSStyle={{ flexGrow: 1, borderRadius: '16px' }}
                 initialViewState={initialViewState}>

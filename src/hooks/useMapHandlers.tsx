@@ -5,6 +5,7 @@ import { BarItem, HoodItem } from '../utils/store.types';
 import { MapRef } from 'react-map-gl/mapbox';
 import { getBounds } from '../utils/geoFuncs';
 import useMapStore from '../data/mapStore';
+import layers from '../data/layers';
 
 export default function useMapHandlers() {
   const {
@@ -59,13 +60,17 @@ export default function useMapHandlers() {
       const feature = e.features[0] as unknown;
       const layerId = e.features[0].layer?.id || '';
       const { lat, lng } = e.lngLat;
-      if (layerId === 'neighbourhood-layer') {
+      if (layerId === layers.NEIGHBOHOOD_LAYER) {
         return handleHoodClick(feature as Feature<Polygon, HoodItem>, map, [
           lng,
           lat,
         ]);
       }
-      return handleBarClick(feature as Feature<Point, BarItem>, map);
+      if (layerId === layers.BARS_LAYER)
+        return handleBarClick(feature as Feature<Point, BarItem>, map);
+      if (layerId === layers.BARS_LAYER_CLUSTER) {
+        if (map) map.flyTo({ center: [lng, lat], zoom: 17, linear: true });
+      }
     },
     [map, isMobile],
   );
@@ -91,7 +96,7 @@ export default function useMapHandlers() {
     setCursor('pointer');
     // @ts-ignore
     const { latitude, longitude, id } = feature?.properties;
-    setPreview('bar', { bar: id });
+    setPreview('bar', { id });
   }
 
   const handleLeave = (e: MapMouseEvent) => {
