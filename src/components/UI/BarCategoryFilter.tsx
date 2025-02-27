@@ -157,7 +157,7 @@ function CategoryItem(props: CategoryItemProps) {
           <label>{label}</label>
           <span className='pr-4 flex place-content-center'>
             <input
-              className=''
+              className='accent-[var(--secondary-color)]'
               type={'checkbox'}
               disabled={disabled}
               checked={checked}
