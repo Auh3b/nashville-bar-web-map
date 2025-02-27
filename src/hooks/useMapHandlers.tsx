@@ -104,6 +104,17 @@ export default function useMapHandlers() {
     setPreview('bar', { id });
   }
 
+  const handleEnter = (e: MapMouseEvent) => {
+    if (!e.features?.length) return;
+    const layerId = e.features[0].layer?.id || '';
+    if (layerId === 'neighbourhood-layer') return;
+    return handleBarEnter();
+  };
+
+  function handleBarEnter() {
+    setExplore(true);
+  }
+
   const handleLeave = (e: MapMouseEvent) => {
     if (!e.features?.length) return;
     const layerId = e.features[0].layer?.id || '';
@@ -123,7 +134,8 @@ export default function useMapHandlers() {
 
   return {
     handleClick,
-    handleMove,
+    handleEnter,
     handleLeave,
+    handleMove,
   };
 }
