@@ -28,9 +28,9 @@ export default function BarSideItem(
   }, [open, rest, map, hood]);
 
   return (
-    <div className={`flex flex-col ${open && 'border-b border-b-slate-700 '}`}>
+    <div className={`flex flex-col ${open && 'border-b border-primary '}`}>
       <div
-        className='flex items-center justify-between  p-3  cursor-pointer border-b border-b-slate-700  hover:bg-slate-800 transition ease-in-out'
+        className='flex items-center justify-between  p-3  cursor-pointer border-b border-primary item-hover transition ease-in-out'
         onClick={handleClick}>
         <span className='text-xs uppercase'>{name}</span>
         <span>{open ? <FaAngleDown /> : <FaAngleRight />}</span>
@@ -39,10 +39,9 @@ export default function BarSideItem(
         className={` transition-all duration-500 ease-in-out  scrollbar-none ${
           open ? 'max-h-84 overflow-scroll' : 'max-h-0 overflow-hidden'
         }`}>
+        {children}
         <div className='mb-4 px-4 pt-4 text-sm'>📌{address}</div>
         <div className='px-4 mb-4 text-xs'>{description}</div>
-
-        {children}
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ export default function BarsInfoUI() {
     <div className={`transition-all duration-500 w-full md:py-2`}>
       {isDataLoaded && (
         <>
-          <div className='flex items-center justify-between uppercase pl-3 pr-2 font-medium md:py-2 border-b border-slate-700'>
+          <div className='flex items-center justify-between uppercase pl-3 pr-2 font-medium md:py-2 border-b border-primary'>
             <span>bars</span>
             {isMobile && (
               <button
@@ -50,7 +50,7 @@ export default function BarsInfoUI() {
                 igWidgetId={igWidgetId}
                 {...props}>
                 <ElfsightWidget
-                  className='px-4 pb-4'
+                  className='px-4 py-4'
                   lazy
                   widgetId={igWidgetId}
                 />

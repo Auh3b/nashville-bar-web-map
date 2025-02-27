@@ -17,7 +17,7 @@ export default function SidePanel() {
   return (
     <div
       ref={ref}
-      className={`relative py-2 rounded-2xl bg-gray-900 hidden  md:flex overflow-x-auto overflow-y-hidden scrollbar-none w-1/3 h-full`}>
+      className={`relative py-2 card-container container-dark hidden  md:flex overflow-x-auto overflow-y-hidden scrollbar-none w-1/3 h-full`}>
       {transitions((springs, i) => {
         return (
           <animated.div

@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import useMapStore from '../data/mapStore';
 import { DataSets } from '../utils/store.types';
-import { featureCollection } from '@turf/turf';
 
 const useData = (id: keyof DataSets) => {
   const { data: datasets, hood } = useMapStore((state) => state);
@@ -12,11 +11,7 @@ const useData = (id: keyof DataSets) => {
       return datasets.hoods;
     }
 
-    return featureCollection(
-      datasets.bars?.features.filter(
-        (bar) => bar.properties.hoodname === hood?.name,
-      ),
-    );
+    return datasets.bars;
   }, [datasets, hood]);
   return data;
 };

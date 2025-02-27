@@ -30,13 +30,12 @@ export default function useMapHandlers() {
       const name = feature.properties?.['name'];
       const bounds = getBounds(feature);
       setHood({ id, name, bounds });
-
-      setExplore(false);
+      setExplore(true);
       if (isMobile) setHoodCenter(point);
 
       if (mapRef) {
         // @ts-ignore
-        mapRef.fitBounds(bounds, { padding: 20, maxZoom: 12.9 });
+        mapRef.fitBounds(bounds, { padding: 20, zoom: 13.1 });
       }
     },
     [isMobile],
@@ -88,8 +87,9 @@ export default function useMapHandlers() {
     setCursor('pointer');
     const id = feature.properties?.['id'];
     const name = feature.properties?.['name'];
+    const bounds = getBounds(feature);
     setExplore(false);
-    setPreview('hood', { id, name });
+    setHood({ id, name, bounds });
   }
 
   function handleBarMove(feature: Feature<Point, BarItem>) {
@@ -108,7 +108,7 @@ export default function useMapHandlers() {
 
   function handleHoodLeave() {
     setCursor('');
-    setPreview('hood', undefined);
+    setHood(undefined);
   }
 
   function handleBarLeave() {

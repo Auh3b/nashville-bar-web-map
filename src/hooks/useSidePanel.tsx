@@ -1,10 +1,10 @@
 import useMapStore from '../data/mapStore';
 
 export default function useSidePanel() {
-  const { setPreview } = useMapStore((state) => state);
+  const { setHood } = useMapStore((state) => state);
 
   function ResetPreview() {
-    setPreview('hood', undefined);
+    setHood(undefined);
   }
 
   return {

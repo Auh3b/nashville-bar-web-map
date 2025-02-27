@@ -5,7 +5,6 @@ import MapLayersContainer from './components/map/layers';
 import useSidePanel from './hooks/useSidePanel';
 import SidePanel from './components/UI/SidePanel';
 import MobileDrawer from './components/UI/MobileDrawer';
-import Header from './components/UI/Header';
 import MapNav from './components/map/MapNav';
 import useLoadLayers from './hooks/useLoadLayers';
 import useMapStore from './data/mapStore';
@@ -13,6 +12,7 @@ import useResize from './hooks/useResize';
 import { useEffect } from 'react';
 import MobileHoodView from './components/UI/MobileHoodView';
 import layers from './data/layers';
+import BarCategoryFilter from './components/UI/BarCategoryFilter';
 
 const initialViewState: ViewState = {
   longitude: -86.78,
@@ -42,8 +42,8 @@ function App() {
       ref={ref}
       className='relative flex items-center justify-center w-full h-full  md:p-4'>
       <MapProvider>
-        <div className='flex flex-col bg-teal-900 p-4 md:rounded-3xl text-white w-full h-full shadow'>
-          <Header />
+        <div className='flex flex-col p-4 md:rounded-3xl text-white w-full h-full'>
+          {/* <Header /> */}
           <div className='flex grow md:gap-4'>
             <div
               className='grow'
@@ -57,6 +57,7 @@ function App() {
                 <MobileHoodView />
                 <MapLayersContainer />
                 <MapNav initialViewState={initialViewState} />
+                <BarCategoryFilter />
               </MapContainer>
             </div>
             <SidePanel />

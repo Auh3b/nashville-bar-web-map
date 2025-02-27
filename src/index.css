@@ -2,6 +2,13 @@
 
 @plugin 'tailwind-scrollbar';
 
+:root {
+  --primary-color: #263233;
+  --secondary-color: #a06d28;
+  --border-color: #354648;
+  --hover-color: #2f3e3f;
+}
+
 .card-container {
   @apply py-1 rounded-2xl;
 }
@@ -11,7 +18,15 @@
 }
 
 .container-dark {
-  @apply bg-gray-800 text-white;
+  @apply bg-[var(--primary-color)] text-white;
+}
+
+.border-primary {
+  @apply border-[var(--border-color)];
+}
+
+.border-secondary {
+  @apply border-[var(--secondary-color)];
 }
 
 .border-light {
@@ -20,6 +35,10 @@
 
 .border-dark {
   @apply border-gray-700;
+}
+
+.item-hover {
+  @apply hover:bg-[var(--hover-color)];
 }
 
 .button {

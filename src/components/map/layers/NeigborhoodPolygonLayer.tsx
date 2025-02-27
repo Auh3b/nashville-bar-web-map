@@ -6,7 +6,7 @@ import useMapStore from '../../../data/mapStore';
 const sourceId = 'neighbourhood-poly';
 const layerId = 'neighbourhood-layer';
 const maxzoom = 13;
-const color = '#9b3f69';
+const color = '#a06d28';
 export default function NeigborhoodPolygonLayer() {
   const hoods = useData('hoods');
   const selectedHood = useMapStore((state) => state.hood);
