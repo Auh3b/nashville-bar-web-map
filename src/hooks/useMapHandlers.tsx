@@ -6,6 +6,7 @@ import { MapRef } from 'react-map-gl/mapbox';
 import { getBounds } from '../utils/geoFuncs';
 import useMapStore from '../data/mapStore';
 import layers from '../data/layers';
+const interactiveLayerIds = Object.values(layers);
 
 export default function useMapHandlers() {
   const {
@@ -13,6 +14,7 @@ export default function useMapHandlers() {
     setHood,
     setBar,
     setCursor,
+    setInteractiveLayerIds,
     setExplore,
     setHoodCenter,
     isMobile,
@@ -34,8 +36,10 @@ export default function useMapHandlers() {
       if (isMobile) setHoodCenter(point);
 
       if (mapRef) {
+        setInteractiveLayerIds(undefined);
         // @ts-ignore
         mapRef.fitBounds(bounds, { padding: 20, zoom: 13.1 });
+        setTimeout(() => setInteractiveLayerIds(interactiveLayerIds), 2000);
       }
     },
     [isMobile],
@@ -89,6 +93,7 @@ export default function useMapHandlers() {
     const name = feature.properties?.['name'];
     const bounds = getBounds(feature);
     setExplore(false);
+    setBar(undefined);
     setHood({ id, name, bounds });
   }
 

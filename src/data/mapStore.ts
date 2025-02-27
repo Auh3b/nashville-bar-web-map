@@ -10,6 +10,7 @@ import {
 
 interface MapStoreState {
   cursor: string;
+  interactiveLayerIds?: string[];
   hood?: HoodItem;
   hoodCenter?: number[];
   explore: boolean;
@@ -34,6 +35,7 @@ interface MapStoreActions {
   reset: () => void;
   setIsMobile: (value: boolean) => void;
   setHoodCenter: (value: number[] | undefined) => void;
+  setInteractiveLayerIds: (value: string[] | undefined) => void;
 }
 
 const initialState: MapStoreState = {
@@ -80,6 +82,7 @@ const useMapStore = create<MapStoreState & MapStoreActions>((set) => ({
   setExplore: (explore) => set({ explore }),
   setIsMobile: (isMobile) => set({ isMobile }),
   setHoodCenter: (hoodCenter) => set({ hoodCenter }),
+  setInteractiveLayerIds: (interactiveLayerIds) => set({ interactiveLayerIds }),
 }));
 
 export default useMapStore;
