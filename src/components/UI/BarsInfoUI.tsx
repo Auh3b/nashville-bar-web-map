@@ -17,14 +17,14 @@ export default function BarsInfoUI() {
     setExplore(false);
   };
 
-  useEffect(() => {
-    if ((preview || bar) && isDataLoaded && ref.current) {
-      document
-        // @ts-ignore
-        .getElementById(preview?.bar ? preview.bar : bar.id)
-        ?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [bar, isDataLoaded, ref]);
+  // useEffect(() => {
+  //   if ((preview || bar) && isDataLoaded && ref.current) {
+  //     document
+  //       // @ts-ignore
+  //       .getElementById(preview?.bar ? preview.bar : bar.id)
+  //       ?.scrollIntoView({ behavior: 'smooth' });
+  //   }
+  // }, [bar, isDataLoaded, ref]);
   return (
     <div
       ref={ref}
