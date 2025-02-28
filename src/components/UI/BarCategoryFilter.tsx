@@ -46,7 +46,7 @@ const initialCategories: Categories = {
 };
 
 export default function BarCategoryFilter() {
-  const { explore } = useMapStore();
+  const { explore, isMobile } = useMapStore();
   const [categories, setCategories] = useState(initialCategories);
 
   const transition = useTransition(explore, {
@@ -90,7 +90,7 @@ export default function BarCategoryFilter() {
   return (
     <>
       {transition((style, i) => {
-        return i ? (
+        return i && !isMobile ? (
           <animated.div
             className='card-container container-dark absolute top-4 left-4 min-w-44'
             style={style}>

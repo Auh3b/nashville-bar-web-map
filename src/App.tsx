@@ -10,7 +10,7 @@ import useLoadLayers from './hooks/useLoadLayers';
 import useMapStore from './data/mapStore';
 import useResize from './hooks/useResize';
 import { useEffect } from 'react';
-import MobileHoodView from './components/UI/MobileHoodView';
+// import MobileHoodView from './components/UI/MobileHoodView';
 import BarCategoryFilter from './components/UI/BarCategoryFilter';
 
 const initialViewState: ViewState = {
@@ -52,7 +52,7 @@ function App() {
                 }}
                 CSSStyle={{ flexGrow: 1, borderRadius: '16px' }}
                 initialViewState={initialViewState}>
-                <MobileHoodView />
+                {/* <MobileHoodView /> */}
                 <MapLayersContainer />
                 <MapNav initialViewState={initialViewState} />
                 <BarCategoryFilter />

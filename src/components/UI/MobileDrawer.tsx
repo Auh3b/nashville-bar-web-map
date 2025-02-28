@@ -14,6 +14,7 @@ export default function MobileDrawer() {
     leave: { opacity: 0, transform: `translateY(${size.height}px)` },
     exitBeforeEnter: true,
   });
+
   return (
     <Fragment>
       {transition((springs, i) => {

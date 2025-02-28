@@ -32,7 +32,7 @@ export default function useMapHandlers() {
       const name = feature.properties?.['name'];
       const bounds = getBounds(feature);
       setHood({ id, name, bounds });
-      setExplore(true);
+      if (!isMobile) setExplore(true);
       if (isMobile) setHoodCenter(point);
 
       if (mapRef) {
@@ -78,14 +78,19 @@ export default function useMapHandlers() {
     [map, isMobile],
   );
 
-  const handleMove = (e: MapMouseEvent) => {
-    if (!e.features?.length) return;
-    const feature = e.features[0] as unknown;
-    const layerId = e.features[0].layer?.id || '';
-    if (layerId === 'neighbourhood-layer')
-      return handleHoodMove(feature as Feature<Polygon, HoodItem>);
-    return handleBarMove(feature as Feature<Point, BarItem>);
-  };
+  const handleMove = useCallback(
+    (e: MapMouseEvent) => {
+      if (isMobile) return;
+      console.log(e);
+      if (!e.features?.length) return;
+      const feature = e.features[0] as unknown;
+      const layerId = e.features[0].layer?.id || '';
+      if (layerId === 'neighbourhood-layer')
+        return handleHoodMove(feature as Feature<Polygon, HoodItem>);
+      return handleBarMove(feature as Feature<Point, BarItem>);
+    },
+    [isMobile],
+  );
 
   function handleHoodMove(feature: Feature<Polygon, HoodItem>) {
     setCursor('pointer');
@@ -104,12 +109,16 @@ export default function useMapHandlers() {
     setPreview('bar', { id });
   }
 
-  const handleEnter = (e: MapMouseEvent) => {
-    if (!e.features?.length) return;
-    const layerId = e.features[0].layer?.id || '';
-    if (layerId === 'neighbourhood-layer') return;
-    return handleBarEnter();
-  };
+  const handleEnter = useCallback(
+    (e: MapMouseEvent) => {
+      if (isMobile) return;
+      if (!e.features?.length) return;
+      const layerId = e.features[0].layer?.id || '';
+      if (layerId === 'neighbourhood-layer') return;
+      return handleBarEnter();
+    },
+    [isMobile],
+  );
 
   function handleBarEnter() {
     setExplore(true);
