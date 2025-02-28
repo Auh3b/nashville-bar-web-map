@@ -26,6 +26,8 @@ export interface BarsItemProperty {
   address: string;
   description: string;
   igWidgetId: string;
+  primary: string;
+  secondary?: string;
   zipcode: number;
   latitude: number;
   longitude: number;
@@ -44,4 +46,15 @@ export type Hoods = FeatureCollection<Point | MultiPoint, HoodsItemProperty>;
 export interface DataSets {
   bars: Bars;
   hoods: Hoods;
+}
+
+export interface Category {
+  value: string;
+  checked: boolean;
+  label: string;
+  subs?: Categories;
+}
+
+export interface Categories {
+  [k: string]: Category;
 }

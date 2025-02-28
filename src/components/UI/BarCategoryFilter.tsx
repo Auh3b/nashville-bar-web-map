@@ -3,51 +3,11 @@ import { useTransition, animated } from '@react-spring/web';
 import { FaAngleRight } from 'react-icons/fa6';
 import { FaAngleDown } from 'react-icons/fa6';
 import useMapStore from '../../data/mapStore';
-
-interface Category {
-  value: string;
-  checked: boolean;
-  label: string;
-  subs?: Categories;
-}
-
-interface Categories {
-  [k: string]: Category;
-}
-
-const initialCategories: Categories = {
-  bars: {
-    label: 'Bars',
-    checked: true,
-    value: 'bars',
-    subs: {
-      speeckeasies: {
-        value: 'speeckeasies',
-        checked: true,
-        label: 'Speekeasies',
-      },
-      celebrity: { value: 'celebrity', checked: true, label: 'Celebrity' },
-      dive: { value: 'dive', checked: true, label: 'Dive Bar' },
-      classic: { value: 'classic', checked: true, label: 'Classic' },
-    },
-  },
-  live_events: {
-    label: 'Live Music Venues',
-    checked: true,
-    value: 'live_events',
-  },
-  accomondations: {
-    label: 'Accomodations',
-    checked: true,
-    value: 'accomondations',
-    subs: { airbnb: { label: 'AirBnB', value: 'airbnb', checked: true } },
-  },
-  restaurants: { checked: true, label: 'Restaurants', value: 'restaurants' },
-};
+import { Categories } from '../../utils/store.types';
 
 export default function BarCategoryFilter() {
-  const { explore, isMobile } = useMapStore();
-  const [categories, setCategories] = useState(initialCategories);
+  const { explore, isMobile, eventsCategories, updateCategories } =
+    useMapStore();
 
   const transition = useTransition(explore, {
     from: { opacity: 0, transform: `translateX(-50px)` },
@@ -56,54 +16,25 @@ export default function BarCategoryFilter() {
     exitBeforeEnter: true,
   });
 
-  const handleCheck = useCallback(
-    (checked: boolean, id: string, parent?: string) => {
-      setCategories((prev) => {
-        if (parent) {
-          return {
-            ...prev,
-            [parent]: {
-              ...prev[parent],
-              subs: {
-                ...prev[parent]['subs'],
-                [id]: {
-                  // @ts-ignore
-                  ...prev?.[parent]?.['subs'][id],
-                  checked,
-                },
-              },
-            },
-          };
-        }
-        return {
-          ...prev,
-          [id]: {
-            ...prev[id],
-            checked,
-          },
-        };
-      });
-    },
-    [setCategories],
-  );
-
   return (
     <>
       {transition((style, i) => {
         return i && !isMobile ? (
           <animated.div
+            key={`category_group_${i}`}
             className='card-container container-dark absolute top-4 left-4 min-w-44'
             style={style}>
             <span className='block border-b border-primary px-4 py-2 font-semibold text-lg'>
               Categories
             </span>
-            {Object.values(categories).map((d) => (
-              <CategoryItem
-                {...d}
-                onCheckChange={handleCheck}
-                key={d.value}
-              />
-            ))}
+            {eventsCategories &&
+              Object.values(eventsCategories).map((d) => (
+                <CategoryItem
+                  {...d}
+                  onCheckChange={updateCategories}
+                  key={d.value}
+                />
+              ))}
           </animated.div>
         ) : (
           <></>

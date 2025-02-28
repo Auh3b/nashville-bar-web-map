@@ -81,7 +81,6 @@ export default function useMapHandlers() {
   const handleMove = useCallback(
     (e: MapMouseEvent) => {
       if (isMobile) return;
-      console.log(e);
       if (!e.features?.length) return;
       const feature = e.features[0] as unknown;
       const layerId = e.features[0].layer?.id || '';

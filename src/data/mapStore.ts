@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import {
   BarItem,
   Bars,
+  Categories,
   DataSets,
   HoodItem,
   Hoods,
@@ -15,6 +16,7 @@ interface MapStoreState {
   hoodCenter?: number[];
   explore: boolean;
   isDataLoaded?: boolean;
+  eventsCategories?: Categories;
   preview?: Preview;
   bar?: BarItem;
   isMobile: boolean;
@@ -36,6 +38,8 @@ interface MapStoreActions {
   setIsMobile: (value: boolean) => void;
   setHoodCenter: (value: number[] | undefined) => void;
   setInteractiveLayerIds: (value: string[] | undefined) => void;
+  setCategories: (value: Categories) => void;
+  updateCategories: (checked: boolean, id: string, parent?: string) => void;
 }
 
 const initialState: MapStoreState = {
@@ -83,6 +87,38 @@ const useMapStore = create<MapStoreState & MapStoreActions>((set) => ({
   setIsMobile: (isMobile) => set({ isMobile }),
   setHoodCenter: (hoodCenter) => set({ hoodCenter }),
   setInteractiveLayerIds: (interactiveLayerIds) => set({ interactiveLayerIds }),
+  setCategories: (eventsCategories) => set({ eventsCategories }),
+  updateCategories: (checked, id, parent) =>
+    // @ts-ignore
+    set((state) => {
+      if (parent) {
+        return {
+          eventsCategories: {
+            ...state.eventsCategories,
+            [parent]: {
+              ...state.eventsCategories?.[parent],
+              subs: {
+                ...state.eventsCategories?.[parent]['subs'],
+                [id]: {
+                  // @ts-ignore
+                  ...state?.eventsCategories?.[parent]?.['subs'][id],
+                  checked,
+                },
+              },
+            },
+          },
+        };
+      }
+      return {
+        eventsCategories: {
+          ...state.eventsCategories,
+          [id]: {
+            ...state?.eventsCategories?.[id],
+            checked,
+          },
+        },
+      };
+    }),
 }));
 
 export default useMapStore;

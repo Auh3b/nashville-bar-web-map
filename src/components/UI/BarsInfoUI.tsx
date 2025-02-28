@@ -7,9 +7,7 @@ import { IoCloseOutline } from 'react-icons/io5';
 
 export default function BarsInfoUI() {
   const bars = useDataMap('bars');
-  const { hood, isDataLoaded, setExplore, isMobile } = useMapStore(
-    (state) => state,
-  );
+  const { isDataLoaded, setExplore, isMobile } = useMapStore((state) => state);
   const handleClose = () => {
     setExplore(false);
   };
@@ -35,8 +33,7 @@ export default function BarsInfoUI() {
               />
               <span className='block text-sm text-center'>
                 <span className='text-lg font-medium'>Sorry!</span>
-                <br /> No bars available in{' '}
-                {hood ? hood.name : 'this neighborhood'}.
+                <br /> No bars available.
               </span>
             </div>
           )}
