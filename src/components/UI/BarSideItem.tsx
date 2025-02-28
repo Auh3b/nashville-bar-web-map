@@ -28,7 +28,9 @@ export default function BarSideItem(
   }, [open, rest, map, hood]);
 
   return (
-    <div className={`flex flex-col ${open && 'border-b border-primary '}`}>
+    <div
+      id={rest.id}
+      className={`flex flex-col ${open && 'border-b border-primary '}`}>
       <div
         className='flex items-center justify-between  p-3  cursor-pointer border-b border-primary item-hover transition ease-in-out'
         onClick={handleClick}>

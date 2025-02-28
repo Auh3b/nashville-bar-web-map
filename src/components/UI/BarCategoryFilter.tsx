@@ -4,6 +4,7 @@ import { FaAngleRight } from 'react-icons/fa6';
 import { FaAngleDown } from 'react-icons/fa6';
 import useMapStore from '../../data/mapStore';
 import { Categories } from '../../utils/store.types';
+import { ascending } from 'd3-array';
 
 export default function BarCategoryFilter() {
   const { explore, isMobile, eventsCategories, updateCategories } =
@@ -24,17 +25,19 @@ export default function BarCategoryFilter() {
             key={`category_group_${i}`}
             className='card-container container-dark absolute top-4 left-4 min-w-44'
             style={style}>
-            <span className='block border-b border-primary px-4 py-2 font-semibold text-lg'>
+            <span className='block border-b border-primary px-4 py-2 font-medium text-sm uppercase'>
               Categories
             </span>
             {eventsCategories &&
-              Object.values(eventsCategories).map((d) => (
-                <CategoryItem
-                  {...d}
-                  onCheckChange={updateCategories}
-                  key={d.value}
-                />
-              ))}
+              Object.values(eventsCategories)
+                .sort((a, b) => ascending(a.label, b.label))
+                .map((d) => (
+                  <CategoryItem
+                    {...d}
+                    onCheckChange={updateCategories}
+                    key={d.value}
+                  />
+                ))}
           </animated.div>
         ) : (
           <></>

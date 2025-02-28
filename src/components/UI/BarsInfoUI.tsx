@@ -4,19 +4,35 @@ import { LuBeerOff } from 'react-icons/lu';
 import useDataMap from '../../hooks/useDataMap';
 import useMapStore from '../../data/mapStore';
 import { IoCloseOutline } from 'react-icons/io5';
+import { useEffect, useRef } from 'react';
 
 export default function BarsInfoUI() {
+  const ref = useRef<null | HTMLDivElement>(null);
   const bars = useDataMap('bars');
-  const { isDataLoaded, setExplore, isMobile } = useMapStore((state) => state);
+
+  const { isDataLoaded, bar, preview, setExplore, isMobile } = useMapStore(
+    (state) => state,
+  );
   const handleClose = () => {
     setExplore(false);
   };
+
+  useEffect(() => {
+    if ((preview || bar) && isDataLoaded && ref.current) {
+      document
+        // @ts-ignore
+        .getElementById(preview?.bar ? preview.bar : bar.id)
+        ?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [bar, isDataLoaded, ref]);
   return (
-    <div className={`transition-all duration-500 w-full md:py-2`}>
+    <div
+      ref={ref}
+      className={`transition-all duration-500 w-full md:py-2`}>
       {isDataLoaded && (
         <>
           <div className='flex items-center justify-between uppercase pl-3 pr-2 font-medium md:py-2 border-b border-primary'>
-            <span>bars</span>
+            <span>Spots</span>
             {isMobile && (
               <button
                 className=' hover:cursor-pointer'
