@@ -154,8 +154,8 @@ function CategoryItem(props: CategoryItemProps) {
           {open ? <FaAngleDown /> : <FaAngleRight />}
         </button>
         <div className='flex gap-2 items-center justify-between grow'>
-          <label>{label}</label>
-          <span className='pr-4 flex place-content-center'>
+          <span>{label}</span>
+          <div className='pr-4 flex place-content-center'>
             <input
               className='accent-[var(--secondary-color)]'
               type={'checkbox'}
@@ -163,7 +163,7 @@ function CategoryItem(props: CategoryItemProps) {
               checked={checked}
               onChange={handleChange}
             />
-          </span>
+          </div>
         </div>
       </div>
       <div className={` ${open ? 'h-full' : 'h-0 overflow-hidden'} ml-3`}>
