@@ -10,7 +10,6 @@ import useLoadLayers from './hooks/useLoadLayers';
 import useMapStore from './data/mapStore';
 import useResize from './hooks/useResize';
 import { useEffect } from 'react';
-// import MobileHoodView from './components/UI/MobileHoodView';
 import BarCategoryFilter from './components/UI/BarCategoryFilter';
 
 const initialViewState: ViewState = {
@@ -23,6 +22,7 @@ const initialViewState: ViewState = {
 };
 
 function App() {
+  const { data } = useMapStore();
   useLoadLayers();
   const { interactiveLayerIds } = useMapStore();
   const setIsMobile = useMapStore((state) => state.setIsMobile);
@@ -35,6 +35,7 @@ function App() {
       setIsMobile(true);
     }
   }, [size.width]);
+  // console.log(data);
   return (
     <div
       ref={ref}
@@ -52,7 +53,6 @@ function App() {
                 }}
                 CSSStyle={{ flexGrow: 1, borderRadius: '16px' }}
                 initialViewState={initialViewState}>
-                {/* <MobileHoodView /> */}
                 <MapLayersContainer />
                 <MapNav initialViewState={initialViewState} />
                 <BarCategoryFilter />

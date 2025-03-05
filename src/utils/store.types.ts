@@ -16,6 +16,7 @@ export interface Preview {
 
 export interface HoodItem extends HoodsItemProperty {
   bounds: number[][];
+  description: string;
 }
 
 export type BarItem = BarsItemProperty;

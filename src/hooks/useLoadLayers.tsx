@@ -1,38 +1,50 @@
 import { useEffect } from 'react';
 import useMapStore from '../data/mapStore';
-import { Bars, DataSets, Hoods } from '../utils/store.types';
 import layers from '../data/layers';
 import { getCategoryTree } from '../utils/dtFuncs';
-
-const datasets: [keyof DataSets, string][] = [
-  [
-    'hoods',
-    'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/nashville-neighbourhoods-custom.geojson',
-  ],
-  [
-    'bars',
-    'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/nashville-bars-data.geojson',
-  ],
-];
-
+import { getPosts } from '../utils/wpApi';
+import { postsTofeatureCollection } from '../utils/geoFuncs';
 const interactiveLayerIds = Object.values(layers);
 
 export default function useLoadLayers() {
-  const { setDataset, setInteractiveLayerIds, setDataLoaded, setCategories } =
-    useMapStore((state) => state);
+  const {
+    data,
+    setDataset,
+    setInteractiveLayerIds,
+    setDataLoaded,
+    setCategories,
+  } = useMapStore((state) => state);
 
   useEffect(() => {
-    Promise.all(datasets.map(([_id, url]) => fetch(url)))
-      .then((res) => Promise.all(res.map((r) => r.json())))
+    getPosts('map_spot')
       .then((data) => {
-        data.forEach((d: Bars | Hoods, i) => setDataset(datasets[i][0], d));
-        setDataLoaded();
-        setInteractiveLayerIds(interactiveLayerIds);
+        return postsTofeatureCollection(data);
+      })
+      .then((data) => {
+        // @ts-ignore
+        setDataset('bars', data);
         setCategories(
           // @ts-ignore
-          getCategoryTree(data[1].features.map(({ properties }) => properties)),
+          getCategoryTree(data.features.map(({ properties }) => properties)),
         );
       });
   }, []);
+
+  useEffect(() => {
+    getPosts('map_neighborhood')
+      .then((data) => {
+        return postsTofeatureCollection(data);
+      })
+      // @ts-ignore
+      .then((data) => setDataset('hoods', data));
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      setDataLoaded();
+      setInteractiveLayerIds(interactiveLayerIds);
+    }
+  }, [data]);
+
   return;
 }

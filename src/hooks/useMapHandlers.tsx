@@ -30,8 +30,10 @@ export default function useMapHandlers() {
     ) => {
       const id = feature.properties?.['id'];
       const name = feature.properties?.['name'];
+      const wp = JSON.parse(feature.properties.wp);
+      const description = wp.content.rendered;
       const bounds = getBounds(feature);
-      setHood({ id, name, bounds });
+      setHood({ id, name, bounds, description });
       if (!isMobile) setExplore(true);
       if (isMobile) setHoodCenter(point);
 
@@ -95,10 +97,13 @@ export default function useMapHandlers() {
     setCursor('pointer');
     const id = feature.properties?.['id'];
     const name = feature.properties?.['name'];
+    const wp = JSON.parse(feature.properties.wp);
+    const description = wp.content.rendered;
+    console.log(description);
     const bounds = getBounds(feature);
     setExplore(false);
     setBar(undefined);
-    setHood({ id, name, bounds });
+    setHood({ id, name, bounds, description });
   }
 
   function handleBarMove(feature: Feature<Point, BarItem>) {

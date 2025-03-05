@@ -52,11 +52,12 @@ export default function BarsInfoUI() {
                 id={id}
                 igWidgetId={igWidgetId}
                 {...props}>
-                <ElfsightWidget
-                  className='px-4 py-4'
-                  lazy
-                  widgetId={igWidgetId}
-                />
+                <div className='px-4 py-4  overflow-hidden'>
+                  <ElfsightWidget
+                    lazy
+                    widgetId={igWidgetId}
+                  />
+                </div>
               </BarSideItem>
             ))}
         </>
