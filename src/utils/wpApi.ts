@@ -13,7 +13,5 @@ export const getPosts = async (postType: string) => {
     );
     const data = await res.json();
     return data;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
