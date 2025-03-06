@@ -10,6 +10,8 @@ const interactiveLayerIds = Object.values(layers);
 
 export default function useMapHandlers() {
   const {
+    bar,
+    preview,
     setPreview,
     setHood,
     setBar,
@@ -30,6 +32,7 @@ export default function useMapHandlers() {
     ) => {
       const id = feature.properties?.['id'];
       const name = feature.properties?.['name'];
+      // @ts-ignore
       const wp = JSON.parse(feature.properties.wp);
       const description = wp.content.rendered;
       const bounds = getBounds(feature);
@@ -97,9 +100,9 @@ export default function useMapHandlers() {
     setCursor('pointer');
     const id = feature.properties?.['id'];
     const name = feature.properties?.['name'];
+    // @ts-ignore
     const wp = JSON.parse(feature.properties.wp);
     const description = wp.content.rendered;
-    console.log(description);
     const bounds = getBounds(feature);
     setExplore(false);
     setBar(undefined);
@@ -109,9 +112,19 @@ export default function useMapHandlers() {
   function handleBarMove(feature: Feature<Point, BarItem>) {
     setCursor('pointer');
     // @ts-ignore
-    const { latitude, longitude, id } = feature?.properties;
-    setPreview('bar', { id });
+    setBar(undefined);
+    setPreview('bar', feature.properties);
   }
+
+  const handleBarEnter = useCallback(() => {
+    if (bar) {
+      setBar(undefined);
+    }
+    if (preview?.bar) {
+      setPreview('bar', undefined);
+    }
+    setExplore(true);
+  }, [preview, bar]);
 
   const handleEnter = useCallback(
     (e: MapMouseEvent) => {
@@ -123,10 +136,6 @@ export default function useMapHandlers() {
     },
     [isMobile],
   );
-
-  function handleBarEnter() {
-    setExplore(true);
-  }
 
   const handleLeave = (e: MapMouseEvent) => {
     if (!e.features?.length) return;
