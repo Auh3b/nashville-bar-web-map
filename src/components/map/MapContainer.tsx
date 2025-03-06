@@ -16,7 +16,6 @@ export default function MapContainer(
   props: PropsWithChildren<MapContainerProps>,
 ) {
   const { CSSStyle, initialViewState, mapProps, children } = props;
-  // const [viewState, setViewState] = useState(initialViewState);
   const { handleClick, handleLeave, handleMove, handleEnter } =
     useMapHandlers();
   const cursor = useMapStore((state) => state.cursor);
@@ -27,14 +26,12 @@ export default function MapContainer(
       initialViewState={initialViewState}
       mapStyle='mapbox://styles/robertchiko/cm77litwb008301s69wi1a2lz'
       style={CSSStyle}
-      // onMove={(e) => setViewState(e.viewState)}
       onMouseEnter={handleEnter}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       onClick={handleClick}
       mapboxAccessToken={accessToken}
       {...mapProps}>
-      {/* {viewState && <ViewStateView viewState={viewState} />} */}
       {children}
     </Map>
   );

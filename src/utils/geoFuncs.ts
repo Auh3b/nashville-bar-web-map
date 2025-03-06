@@ -1,7 +1,5 @@
 import { bbox, feature, featureCollection } from '@turf/turf';
 import { Feature, FeatureCollection } from 'geojson';
-// import { parse } from '@loaders.gl/core';
-// import { WKBLoader } from '@loaders.gl/wkt';
 import { parse } from 'wellknown';
 
 export function getBounds(feature: Feature | FeatureCollection) {
@@ -12,8 +10,6 @@ export function getBounds(feature: Feature | FeatureCollection) {
   ];
   return bounds;
 }
-
-// type PostType = 'point' | 'polygon';
 
 function getFeatureGenerator() {
   return feature;

@@ -22,7 +22,6 @@ const initialViewState: ViewState = {
 };
 
 function App() {
-  // const { data } = useMapStore();
   useLoadLayers();
   const { interactiveLayerIds } = useMapStore();
   const setIsMobile = useMapStore((state) => state.setIsMobile);
@@ -35,14 +34,12 @@ function App() {
       setIsMobile(true);
     }
   }, [size.width]);
-  // console.log(data);
   return (
     <div
       ref={ref}
       className='relative flex items-center justify-center w-full h-full  md:p-4'>
       <MapProvider>
         <div className='flex flex-col p-4 md:rounded-3xl text-white w-full h-full'>
-          {/* <Header /> */}
           <div className='flex grow md:gap-4'>
             <div
               className='grow'
