@@ -111,18 +111,10 @@ export default function useMapHandlers() {
 
   function handleBarMove(feature: Feature<Point, BarItem>) {
     setCursor('pointer');
-    // @ts-ignore
-    setBar(undefined);
     setPreview('bar', feature.properties);
   }
 
   const handleBarEnter = useCallback(() => {
-    if (bar) {
-      setBar(undefined);
-    }
-    if (preview?.bar) {
-      setPreview('bar', undefined);
-    }
     setExplore(true);
   }, [preview, bar]);
 
