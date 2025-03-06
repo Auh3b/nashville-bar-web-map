@@ -13,7 +13,7 @@ export function getBounds(feature: Feature | FeatureCollection) {
   return bounds;
 }
 
-type PostType = 'point' | 'polygon';
+// type PostType = 'point' | 'polygon';
 
 function getFeatureGenerator() {
   return feature;

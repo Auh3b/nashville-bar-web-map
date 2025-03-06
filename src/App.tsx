@@ -22,7 +22,7 @@ const initialViewState: ViewState = {
 };
 
 function App() {
-  const { data } = useMapStore();
+  // const { data } = useMapStore();
   useLoadLayers();
   const { interactiveLayerIds } = useMapStore();
   const setIsMobile = useMapStore((state) => state.setIsMobile);
