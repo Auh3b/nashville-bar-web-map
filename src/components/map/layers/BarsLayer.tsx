@@ -2,33 +2,28 @@ import { Fragment, useEffect } from 'react';
 import { Layer, Source, useMap } from 'react-map-gl/mapbox';
 import useData from '../../../hooks/useData';
 import useMapStore from '../../../data/mapStore';
-import HotelSdfIcon from '../../../assets/hotel-sdf.png';
-import LiveEventSdfIcon from '../../../assets/live-events-sdf.png';
-import RestaurantSdfIcon from '../../../assets/restaurant-sdf.png';
-import BeerSdfIcon from '../../../assets/beer-1-sdf.png';
-import DefaultSdfIcon from '../../../assets/default-sdf.png';
 import { loadImages } from '../../../utils/mapFuncs';
 
 const icons = [
   {
     label: 'hotel-spot',
-    url: HotelSdfIcon,
+    url: 'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/hotel-sdf.png',
   },
   {
     label: 'bar-spot',
-    url: BeerSdfIcon,
+    url: 'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/beer-1-sdf.png',
   },
   {
     label: 'restaurant-spot',
-    url: RestaurantSdfIcon,
+    url: 'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/restaurant-sdf.png',
   },
   {
     label: 'live-event-spot',
-    url: LiveEventSdfIcon,
+    url: 'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/live-event-sdf.png',
   },
   {
     label: 'default-spot',
-    url: DefaultSdfIcon,
+    url: 'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/default-sdf.png',
   },
 ];
 
