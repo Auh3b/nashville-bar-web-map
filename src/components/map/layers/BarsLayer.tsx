@@ -6,6 +6,7 @@ import HotelSdfIcon from '../../../assets/hotel-sdf.png';
 import LiveEventSdfIcon from '../../../assets/live-events-sdf.png';
 import RestaurantSdfIcon from '../../../assets/restaurant-sdf.png';
 import BeerSdfIcon from '../../../assets/beer-1-sdf.png';
+import DefaultSdfIcon from '../../../assets/default-sdf.png';
 import { loadImages } from '../../../utils/mapFuncs';
 
 const icons = [
@@ -24,6 +25,10 @@ const icons = [
   {
     label: 'live-event-spot',
     url: LiveEventSdfIcon,
+  },
+  {
+    label: 'default-spot',
+    url: DefaultSdfIcon,
   },
 ];
 
@@ -137,7 +142,7 @@ export default function BarsLayer() {
                 'hotel-spot',
                 'Live Music Venue',
                 'live-event-spot',
-                'bar-spot',
+                'default-spot',
               ],
               'icon-size': 0.1,
             }}
