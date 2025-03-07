@@ -2,7 +2,7 @@ const getBaseUrl = (): string => {
   const regex = /^.*:(5173).*$/g;
   const base = window.location.host;
   const found = base.search(regex);
-  return found === -1 ? '' : 'http://localhost:8889';
+  return found === -1 ? '' : 'http://localhost:8888';
 };
 
 export const getPosts = async (postType: string) => {

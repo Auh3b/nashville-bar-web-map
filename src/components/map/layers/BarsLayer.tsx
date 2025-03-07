@@ -2,16 +2,36 @@ import { Fragment, useEffect } from 'react';
 import { Layer, Source, useMap } from 'react-map-gl/mapbox';
 import useData from '../../../hooks/useData';
 import useMapStore from '../../../data/mapStore';
+import HotelSdfIcon from '../../../assets/hotel-sdf.png';
+import LiveEventSdfIcon from '../../../assets/live-events-sdf.png';
+import RestaurantSdfIcon from '../../../assets/restaurant-sdf.png';
+import BeerSdfIcon from '../../../assets/beer-1-sdf.png';
+import { loadImages } from '../../../utils/mapFuncs';
+
+const icons = [
+  {
+    label: 'hotel-spot',
+    url: HotelSdfIcon,
+  },
+  {
+    label: 'bar-spot',
+    url: BeerSdfIcon,
+  },
+  {
+    label: 'restaurant-spot',
+    url: RestaurantSdfIcon,
+  },
+  {
+    label: 'live-event-spot',
+    url: LiveEventSdfIcon,
+  },
+];
 
 const sourceId = 'bars';
 const layerId = 'bars-layer';
-const barIconUrl =
-  'https://raw.githubusercontent.com/Auh3b/nashville-map-data/refs/heads/main/beer-1-sdf.png';
-
 const minzoom = 13;
 const color = '#e6bb32';
 const textHaloColor = '#c1832d';
-const iconName = 'bar-glass-icon';
 const selectedColor = '#da100d';
 
 export default function BarsLayer() {
@@ -21,13 +41,7 @@ export default function BarsLayer() {
 
   useEffect(() => {
     if (mapRef.current) {
-      mapRef.current.loadImage(barIconUrl, (error, image) => {
-        if (error) throw error;
-        if (!mapRef?.current?.hasImage(iconName)) {
-          // @ts-expect-error
-          mapRef.current.addImage(iconName, image, { sdf: true });
-        }
-      });
+      loadImages(mapRef.current, icons);
     }
   }, [mapRef.current]);
 
@@ -112,7 +126,19 @@ export default function BarsLayer() {
             id={layerId}
             source={sourceId}
             layout={{
-              'icon-image': iconName,
+              'icon-image': [
+                'match',
+                ['get', 'primary'],
+                'Bar',
+                'bar-spot',
+                'Restaurant',
+                'restaurant-spot',
+                'Accomodation',
+                'hotel-spot',
+                'Live Music Venue',
+                'live-event-spot',
+                'bar-spot',
+              ],
               'icon-size': 0.1,
             }}
             filter={['!', ['has', 'point_count']]}
@@ -130,7 +156,19 @@ export default function BarsLayer() {
               type='symbol'
               minzoom={minzoom}
               layout={{
-                'icon-image': iconName,
+                'icon-image': [
+                  'match',
+                  ['get', 'primary'],
+                  'Bar',
+                  'bar-spot',
+                  'Restaurant',
+                  'restaurant-spot',
+                  'Accomodation',
+                  'hotel-spot',
+                  'Live Music Venue',
+                  'live-event-spot',
+                  'bar-spot',
+                ],
                 'icon-size': 0.1,
               }}
               filter={['==', ['get', 'id'], selectedBar?.id]}
